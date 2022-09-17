@@ -53,24 +53,24 @@ export default Object.assign([
       })
     ]
   },
-  {
-    input: 'src/index.js',
-    inlineDynamicImports: true,
-    external: builtinModules.concat(nodeDependencies),
-    output: [
-      { file: 'dist/node/openpgp.js', format: 'cjs', name: pkg.name, banner, intro },
-      { file: 'dist/node/openpgp.min.js', format: 'cjs', name: pkg.name, banner, intro, plugins: [terser(terserOptions)], sourcemap: true },
-      { file: 'dist/node/openpgp.mjs', format: 'es', banner, intro },
-      { file: 'dist/node/openpgp.min.mjs', format: 'es', banner, intro, plugins: [terser(terserOptions)], sourcemap: true }
-    ],
-    plugins: [
-      resolve(),
-      commonjs(),
-      replace({
-        'OpenPGP.js VERSION': `OpenPGP.js ${pkg.version}`
-      })
-    ]
-  },
+  // {
+  //   input: 'src/index.js',
+  //   inlineDynamicImports: true,
+  //   external: builtinModules.concat(nodeDependencies),
+  //   output: [
+  //     { file: 'dist/node/openpgp.js', format: 'cjs', name: pkg.name, banner, intro },
+  //     { file: 'dist/node/openpgp.min.js', format: 'cjs', name: pkg.name, banner, intro, plugins: [terser(terserOptions)], sourcemap: true },
+  //     { file: 'dist/node/openpgp.mjs', format: 'es', banner, intro },
+  //     { file: 'dist/node/openpgp.min.mjs', format: 'es', banner, intro, plugins: [terser(terserOptions)], sourcemap: true }
+  //   ],
+  //   plugins: [
+  //     resolve(),
+  //     commonjs(),
+  //     replace({
+  //       'OpenPGP.js VERSION': `OpenPGP.js ${pkg.version}`
+  //     })
+  //   ]
+  // },
   {
     input: 'src/index.js',
     output: [
