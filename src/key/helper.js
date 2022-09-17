@@ -4,32 +4,32 @@
  * @private
  */
 
-import {
-  PublicKeyPacket,
-  PublicSubkeyPacket,
-  SecretKeyPacket,
-  SecretSubkeyPacket,
-  SignaturePacket
-} from '../packet';
+import { PublicKeyPacket, PublicSubkeyPacket, SecretKeyPacket, SecretSubkeyPacket, SignaturePacket } from '../packet';
 import enums from '../enums';
 import crypto from '../crypto';
 import util from '../util';
 import defaultConfig from '../config';
 
-export async function generateSecretSubkey(options, config) {
+export async function generateSecretSubkey(options, config, plugin) {
+  if (plugin !== null) {
+    plugin.dataSubkey = { options, config };
+  }
   const secretSubkeyPacket = new SecretSubkeyPacket(options.date, config);
   secretSubkeyPacket.packets = null;
   secretSubkeyPacket.algorithm = enums.write(enums.publicKey, options.algorithm);
-  await secretSubkeyPacket.generate(options.rsaBits, options.curve);
+  await secretSubkeyPacket.generate(options.rsaBits, options.curve, plugin);
   await secretSubkeyPacket.computeFingerprintAndKeyID();
   return secretSubkeyPacket;
 }
 
-export async function generateSecretKey(options, config) {
+export async function generateSecretKey(options, config, plugin) {
+  if (plugin !== null) {
+    plugin.dataMain = { options, config };
+  }
   const secretKeyPacket = new SecretKeyPacket(options.date, config);
   secretKeyPacket.packets = null;
   secretKeyPacket.algorithm = enums.write(enums.publicKey, options.algorithm);
-  await secretKeyPacket.generate(options.rsaBits, options.curve, options.config);
+  await secretKeyPacket.generate(options.rsaBits, options.curve, plugin);
   await secretKeyPacket.computeFingerprintAndKeyID();
   return secretKeyPacket;
 }

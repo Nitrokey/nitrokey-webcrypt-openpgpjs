@@ -62,17 +62,23 @@ const allowedKeyPackets = /*#__PURE__*/ util.constructAllowedPackets([
  * @static
  * @private
  */
-export async function generate(options, config) {
+export async function generate(options, config, plugin) {
   options.sign = true; // primary key is always a signing key
   options = helper.sanitizeKeyOptions(options);
   options.subkeys = options.subkeys.map((subkey, index) => helper.sanitizeKeyOptions(options.subkeys[index], options));
-  let promises = [helper.generateSecretKey(options, config)];
-  promises = promises.concat(options.subkeys.map(options => helper.generateSecretSubkey(options, config)));
+  let promises = [helper.generateSecretKey(options, config, plugin)];
+  promises = promises.concat(options.subkeys.map(options => helper.generateSecretSubkey(options, config, plugin)));
   const packets = await Promise.all(promises);
 
+  // eslint-disable-next-line no-console
+  console.log('before wrap key');
+
   const key = await wrapKeyObject(packets[0], packets.slice(1), options, config);
-  const revocationCertificate = await key.getRevocationCertificate(options.date, config);
+  console.log('before revcert');
+  // const revocationCertificate = await key.getRevocationCertificate(options.date, config);
+  const revocationCertificate = null;
   key.revocationSignatures = [];
+  console.log('before final return ');
   return { key, revocationCertificate };
 }
 
@@ -174,6 +180,9 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
       return [preferredAlgo, ...algos.filter(algo => algo !== preferredAlgo)];
     }
 
+    console.log('before idpacket');
+
+
     const userIDPacket = UserIDPacket.fromObject(userID);
     const dataToSign = {};
     dataToSign.userID = userIDPacket;
@@ -181,6 +190,8 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
     const signaturePacket = new SignaturePacket();
     signaturePacket.signatureType = enums.signature.certGeneric;
     signaturePacket.publicKeyAlgorithm = secretKeyPacket.algorithm;
+    console.log('before preff');
+
     signaturePacket.hashAlgorithm = await helper.getPreferredHashAlgo(null, secretKeyPacket, undefined, undefined, config);
     signaturePacket.keyFlags = [enums.keyFlags.certifyKeys | enums.keyFlags.signData];
     signaturePacket.preferredSymmetricAlgorithms = createPreferredAlgos([
@@ -221,7 +232,8 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
       signaturePacket.keyExpirationTime = options.keyExpirationTime;
       signaturePacket.keyNeverExpires = false;
     }
-    await signaturePacket.sign(secretKeyPacket, dataToSign, options.date);
+    console.log('before sign');
+    // await signaturePacket.sign(secretKeyPacket, dataToSign, options.date);
 
     return { userIDPacket, signaturePacket };
   })).then(list => {
@@ -230,6 +242,8 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
       packetlist.push(signaturePacket);
     });
   });
+
+  console.log('before subkey packets');
 
   await Promise.all(secretSubkeyPackets.map(async function(secretSubkeyPacket, index) {
     const subkeyOptions = options.subkeys[index];
@@ -244,16 +258,21 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
 
   // Add revocation signature packet for creating a revocation certificate.
   // This packet should be removed before returning the key.
-  const dataToSign = { key: secretKeyPacket };
-  packetlist.push(await helper.createSignaturePacket(dataToSign, null, secretKeyPacket, {
-    signatureType: enums.signature.keyRevocation,
-    reasonForRevocationFlag: enums.reasonForRevocation.noReason,
-    reasonForRevocationString: ''
-  }, options.date, undefined, undefined, config));
+
+  console.log('before subkey packets sign');
+
+  // const dataToSign = { key: secretKeyPacket };
+  // packetlist.push(await helper.createSignaturePacket(dataToSign, null, secretKeyPacket, {
+  //   signatureType: enums.signature.keyRevocation,
+  //   reasonForRevocationFlag: enums.reasonForRevocation.noReason,
+  //   reasonForRevocationString: ''
+  // }, options.date, undefined, undefined, config));
 
   if (options.passphrase) {
     secretKeyPacket.clearPrivateParams();
   }
+
+  console.log('before subkey packets clear');
 
   await Promise.all(secretSubkeyPackets.map(async function(secretSubkeyPacket, index) {
     const subkeyPassphrase = options.subkeys[index].passphrase;
@@ -261,6 +280,7 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
       secretSubkeyPacket.clearPrivateParams();
     }
   }));
+  console.log('before return');
 
   return new PrivateKey(packetlist);
 }

@@ -53,7 +53,7 @@ import { checkKeyRequirements } from './key/helper';
  * @async
  * @static
  */
-export async function generateKey({ userIDs = [], passphrase, type = 'ecc', rsaBits = 4096, curve = 'curve25519', keyExpirationTime = 0, date = new Date(), subkeys = [{}], format = 'armored', config, ...rest }) {
+export async function generateKey({ userIDs = [], passphrase, type = 'ecc', rsaBits = 4096, curve = 'curve25519', keyExpirationTime = 0, date = new Date(), subkeys = [{}], format = 'armored', config, plugin = null, ...rest }) {
   config = { ...defaultConfig, ...config }; checkConfig(config);
   userIDs = toArray(userIDs);
   const unknownOptions = Object.keys(rest); if (unknownOptions.length > 0) throw new Error(`Unknown option: ${unknownOptions.join(', ')}`);
@@ -68,7 +68,7 @@ export async function generateKey({ userIDs = [], passphrase, type = 'ecc', rsaB
   const options = { userIDs, passphrase, type, rsaBits, curve, keyExpirationTime, date, subkeys };
 
   try {
-    const { key, revocationCertificate } = await generate(options, config);
+    const { key, revocationCertificate } = await generate(options, config, plugin);
     key.getKeys().forEach(({ keyPacket }) => checkKeyRequirements(keyPacket, config));
 
     return {
