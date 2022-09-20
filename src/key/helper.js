@@ -12,6 +12,7 @@ import defaultConfig from '../config';
 
 export async function generateSecretSubkey(options, config, plugin) {
   if (plugin !== null) {
+    plugin.type = 'sub';
     plugin.dataSubkey = { options, config };
   }
   const secretSubkeyPacket = new SecretSubkeyPacket(options.date, config);
@@ -24,6 +25,7 @@ export async function generateSecretSubkey(options, config, plugin) {
 
 export async function generateSecretKey(options, config, plugin) {
   if (plugin !== null) {
+    plugin.type = 'main';
     plugin.dataMain = { options, config };
   }
   const secretKeyPacket = new SecretKeyPacket(options.date, config);
