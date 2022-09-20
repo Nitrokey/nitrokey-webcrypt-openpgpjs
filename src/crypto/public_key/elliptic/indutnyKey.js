@@ -30,6 +30,10 @@ export function keyFromPrivate(indutnyCurve, priv) {
 
 export function keyFromPublic(indutnyCurve, pub) {
   const keyPair = indutnyCurve.keyPair({ pub: pub });
+  // eslint-disable-next-line no-console
+  console.log({ keyPair, indutnyCurve, pub });
+  // eslint-disable-next-line no-unreachable
+  // return keyPair;
   if (keyPair.validate().result !== true) {
     throw new Error('Invalid elliptic public key');
   }

@@ -181,7 +181,6 @@ class Curve {
 
   async genKeyPair(plugin) {
     let keyPair;
-    util.printDebug(this);
     if (this.name === 'webcrypt_p256'){
       try {
         return plugin.generateKeyPair(this);
