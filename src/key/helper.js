@@ -84,7 +84,7 @@ export function isDataExpired(keyPacket, signature, date = new Date()) {
  * @param {Object} options
  * @param {Object} config - Full configuration
  */
-export async function createBindingSignature(subkey, primaryKey, options, config) {
+export async function createBindingSignature(subkey, primaryKey, options, config, plugin = null) {
   const dataToSign = {};
   dataToSign.key = primaryKey;
   dataToSign.bind = subkey;
@@ -104,7 +104,7 @@ export async function createBindingSignature(subkey, primaryKey, options, config
     subkeySignaturePacket.keyExpirationTime = options.keyExpirationTime;
     subkeySignaturePacket.keyNeverExpires = false;
   }
-  await subkeySignaturePacket.sign(primaryKey, dataToSign, options.date);
+  await subkeySignaturePacket.sign(primaryKey, dataToSign, options.date, false, plugin);
   return subkeySignaturePacket;
 }
 
@@ -196,7 +196,7 @@ export async function getPreferredAlgo(type, keys = [], date = new Date(), userI
  * @param {Object} config - full configuration
  * @returns {Promise<SignaturePacket>} Signature packet.
  */
-export async function createSignaturePacket(dataToSign, privateKey, signingKeyPacket, signatureProperties, date, userID, detached = false, config) {
+export async function createSignaturePacket(dataToSign, privateKey, signingKeyPacket, signatureProperties, date, userID, detached = false, config, plugin = null) {
   if (signingKeyPacket.isDummy()) {
     throw new Error('Cannot sign with a gnu-dummy key.');
   }
@@ -207,7 +207,7 @@ export async function createSignaturePacket(dataToSign, privateKey, signingKeyPa
   Object.assign(signaturePacket, signatureProperties);
   signaturePacket.publicKeyAlgorithm = signingKeyPacket.algorithm;
   signaturePacket.hashAlgorithm = await getPreferredHashAlgo(privateKey, signingKeyPacket, date, userID, config);
-  await signaturePacket.sign(signingKeyPacket, dataToSign, date, detached);
+  await signaturePacket.sign(signingKeyPacket, dataToSign, date, detached, plugin);
   return signaturePacket;
 }
 

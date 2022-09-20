@@ -117,13 +117,22 @@ export async function verify(algo, hashAlgo, signature, publicParams, data, hash
  * @param {Object} privateKeyParams - Algorithm-specific public and private key parameters
  * @param {Uint8Array} data - Data to be signed
  * @param {Uint8Array} hashed - The hashed data
+ * @param {async function(Uint8Array):Uint8Array} plugin.sign - function
  * @returns {Promise<Object>} Signature                      Object containing named signature parameters.
  * @async
  */
-export async function sign(algo, hashAlgo, publicKeyParams, privateKeyParams, data, hashed) {
+export async function sign(algo, hashAlgo, publicKeyParams, privateKeyParams, data, hashed, plugin = null) {
   if (!publicKeyParams || !privateKeyParams) {
     throw new Error('Missing key parameters');
   }
+
+  if (plugin !== null) {
+    // return publicKey.elliptic.ecdsa.sign(oid, hashAlgo, data, Q, d, hashed);
+    const { oid, Q } = publicKeyParams;
+    const { d } = privateKeyParams;
+    return await plugin.sign(oid, hashAlgo, data, Q, d, hashed);
+  }
+
   switch (algo) {
     case enums.publicKey.rsaEncryptSign:
     case enums.publicKey.rsaEncrypt:

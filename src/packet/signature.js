@@ -169,10 +169,11 @@ class SignaturePacket {
    * @param {Object} data - Contains packets to be signed.
    * @param {Date} [date] - The signature creation time.
    * @param {Boolean} [detached] - Whether to create a detached signature
+   * @param {Object} [plugin] plugin object with callbacks
    * @throws {Error} if signing failed
    * @async
    */
-  async sign(key, data, date = new Date(), detached = false) {
+  async sign(key, data, date = new Date(), detached = false, plugin = null) {
     if (key.version === 5) {
       this.version = 5;
     } else {
@@ -195,7 +196,7 @@ class SignaturePacket {
 
     this.signedHashValue = stream.slice(stream.clone(hash), 0, 2);
     const signed = async () => crypto.signature.sign(
-      this.publicKeyAlgorithm, this.hashAlgorithm, key.publicParams, key.privateParams, toHash, await stream.readToEnd(hash)
+      this.publicKeyAlgorithm, this.hashAlgorithm, key.publicParams, key.privateParams, toHash, await stream.readToEnd(hash), plugin
     );
     if (util.isStream(hash)) {
       this.params = signed();

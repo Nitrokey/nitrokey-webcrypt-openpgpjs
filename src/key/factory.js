@@ -73,7 +73,7 @@ export async function generate(options, config, plugin) {
   // eslint-disable-next-line no-console
   console.log('before wrap key');
 
-  const key = await wrapKeyObject(packets[0], packets.slice(1), options, config);
+  const key = await wrapKeyObject(packets[0], packets.slice(1), options, config, plugin);
   console.log('before revcert');
   // const revocationCertificate = await key.getRevocationCertificate(options.date, config);
   const revocationCertificate = null;
@@ -159,7 +159,7 @@ export async function reformat(options, config) {
  * @param {Object} config - Full configuration
  * @returns {PrivateKey}
  */
-async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, config) {
+async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, config, plugin = null) {
   // set passphrase protection
   if (options.passphrase) {
     await secretKeyPacket.encrypt(options.passphrase, config);
@@ -233,7 +233,7 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
       signaturePacket.keyNeverExpires = false;
     }
     console.log('before sign');
-    // await signaturePacket.sign(secretKeyPacket, dataToSign, options.date);
+    await signaturePacket.sign(secretKeyPacket, dataToSign, options.date, false, plugin);
 
     return { userIDPacket, signaturePacket };
   })).then(list => {
@@ -245,9 +245,10 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
 
   console.log('before subkey packets');
 
+  // plugin based needs signing for that
   await Promise.all(secretSubkeyPackets.map(async function(secretSubkeyPacket, index) {
     const subkeyOptions = options.subkeys[index];
-    const subkeySignaturePacket = await helper.createBindingSignature(secretSubkeyPacket, secretKeyPacket, subkeyOptions, config);
+    const subkeySignaturePacket = await helper.createBindingSignature(secretSubkeyPacket, secretKeyPacket, subkeyOptions, config, plugin);
     return { secretSubkeyPacket, subkeySignaturePacket };
   })).then(packets => {
     packets.forEach(({ secretSubkeyPacket, subkeySignaturePacket }) => {
@@ -261,12 +262,14 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
 
   console.log('before subkey packets sign');
 
-  // const dataToSign = { key: secretKeyPacket };
-  // packetlist.push(await helper.createSignaturePacket(dataToSign, null, secretKeyPacket, {
-  //   signatureType: enums.signature.keyRevocation,
-  //   reasonForRevocationFlag: enums.reasonForRevocation.noReason,
-  //   reasonForRevocationString: ''
-  // }, options.date, undefined, undefined, config));
+
+  // software key does not work without below
+  const dataToSign = { key: secretKeyPacket };
+  packetlist.push(await helper.createSignaturePacket(dataToSign, null, secretKeyPacket, {
+    signatureType: enums.signature.keyRevocation,
+    reasonForRevocationFlag: enums.reasonForRevocation.noReason,
+    reasonForRevocationString: ''
+  }, options.date, undefined, undefined, config, plugin));
 
   if (options.passphrase) {
     secretKeyPacket.clearPrivateParams();
