@@ -85,6 +85,14 @@ export async function publicKeyEncrypt(algo, publicParams, data, fingerprint) {
  * @async
  */
 export async function publicKeyDecrypt(algo, publicKeyParams, privateKeyParams, sessionKeyParams, fingerprint, randomPayload, plugin = null) {
+  // if (plugin !== null) {
+  //   // FIXME take ecdh params for now, but work on the Params groups later
+  //   const { oid, Q, kdfParams } = publicKeyParams;
+  //   const { d } = privateKeyParams;
+  //   const { V, C } = sessionKeyParams;
+  //   return plugin.decrypt(
+  //     oid, kdfParams, V, C.data, Q, d, fingerprint);
+  // }
 
   switch (algo) {
     case enums.publicKey.rsaEncryptSign:
