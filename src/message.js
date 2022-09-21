@@ -226,6 +226,9 @@ export class Message {
               pkeskPacket.publicKeyAlgorithm === enums.publicKey.elgamal
             );
 
+            // eslint-disable-next-line no-console
+            console.log('before constant time decryption');
+
             if (doConstantTimeDecryption) {
               // The goal is to not reveal whether PKESK decryption (specifically the PKCS1 decoding step) failed, hence, we always proceed to decrypt the message,
               // either with the successfully decrypted session key, or with a randomly generated one.
