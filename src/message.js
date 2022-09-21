@@ -103,11 +103,12 @@ export class Message {
    * @param {Array<Object>} [sessionKeys] - Session keys in the form: { data:Uint8Array, algorithm:String, [aeadAlgorithm:String] }
    * @param {Date} [date] - Use the given date for key verification instead of the current time
    * @param {Object} [config] - Full configuration, defaults to openpgp.config
+   * @param {Object} [plugin] - Callbacks
    * @returns {Promise<Message>} New message with decrypted content.
    * @async
    */
-  async decrypt(decryptionKeys, passwords, sessionKeys, date = new Date(), config = defaultConfig) {
-    const sessionKeyObjects = sessionKeys || await this.decryptSessionKeys(decryptionKeys, passwords, date, config);
+  async decrypt(decryptionKeys, passwords, sessionKeys, date = new Date(), config = defaultConfig, plugin = null) {
+    const sessionKeyObjects = sessionKeys || await this.decryptSessionKeys(decryptionKeys, passwords, date, config, plugin);
 
     const symEncryptedPacketlist = this.packets.filterByTag(
       enums.packet.symmetricallyEncryptedData,
@@ -155,13 +156,14 @@ export class Message {
    * @param {Array<String>} [passwords] - Passwords used to decrypt
    * @param {Date} [date] - Use the given date for key verification, instead of current time
    * @param {Object} [config] - Full configuration, defaults to openpgp.config
+   * @param {Object} [plugin] - Callbacks
    * @returns {Promise<Array<{
    *   data: Uint8Array,
    *   algorithm: String
    * }>>} array of object with potential sessionKey, algorithm pairs
    * @async
    */
-  async decryptSessionKeys(decryptionKeys, passwords, date = new Date(), config = defaultConfig) {
+  async decryptSessionKeys(decryptionKeys, passwords, date = new Date(), config = defaultConfig, plugin = null) {
     let decryptedSessionKeyPackets = [];
 
     let exception;
@@ -255,7 +257,7 @@ export class Message {
 
             } else {
               try {
-                await pkeskPacket.decrypt(decryptionKeyPacket);
+                await pkeskPacket.decrypt(decryptionKeyPacket, null, plugin);
                 if (!algos.includes(enums.write(enums.symmetric, pkeskPacket.sessionKeyAlgorithm))) {
                   throw new Error('A non-preferred symmetric algorithm was used.');
                 }

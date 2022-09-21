@@ -311,6 +311,7 @@ export async function encrypt({ message, encryptionKeys, signingKeys, passwords,
  * @param {Signature} [options.signature] - Detached signature for verification
  * @param {Date} [options.date=current date] - Use the given date for verification instead of the current time
  * @param {Object} [options.config] - Custom configuration settings to overwrite those in [config]{@link module:config}
+ * @param {Object} [plugin] - Callbacks to overwrite standard behavior of private keys operations
  * @returns {Promise<Object>} Object containing decrypted and verified message in the form:
  *
  *     {
@@ -330,7 +331,7 @@ export async function encrypt({ message, encryptionKeys, signingKeys, passwords,
  * @async
  * @static
  */
-export async function decrypt({ message, decryptionKeys, passwords, sessionKeys, verificationKeys, expectSigned = false, format = 'utf8', signature = null, date = new Date(), config, ...rest }) {
+export async function decrypt({ message, decryptionKeys, passwords, sessionKeys, verificationKeys, expectSigned = false, format = 'utf8', signature = null, date = new Date(), config, plugin = null, ...rest }) {
   config = { ...defaultConfig, ...config }; checkConfig(config);
   checkMessage(message); verificationKeys = toArray(verificationKeys); decryptionKeys = toArray(decryptionKeys); passwords = toArray(passwords); sessionKeys = toArray(sessionKeys);
   if (rest.privateKeys) throw new Error('The `privateKeys` option has been removed from openpgp.decrypt, pass `decryptionKeys` instead');
@@ -338,7 +339,7 @@ export async function decrypt({ message, decryptionKeys, passwords, sessionKeys,
   const unknownOptions = Object.keys(rest); if (unknownOptions.length > 0) throw new Error(`Unknown option: ${unknownOptions.join(', ')}`);
 
   try {
-    const decrypted = await message.decrypt(decryptionKeys, passwords, sessionKeys, date, config);
+    const decrypted = await message.decrypt(decryptionKeys, passwords, sessionKeys, date, config, plugin);
     if (!verificationKeys) {
       verificationKeys = [];
     }

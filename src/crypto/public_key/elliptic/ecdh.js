@@ -148,7 +148,10 @@ export async function encrypt(oid, kdfParams, data, Q, fingerprint) {
  * @returns {Promise<{secretKey: Uint8Array, sharedKey: Uint8Array}>}
  * @async
  */
-async function genPrivateEphemeralKey(curve, V, Q, d) {
+async function genPrivateEphemeralKey(curve, V, Q, d, plugin = null) {
+  if (plugin !== null) {
+    return plugin.agree(curve, V, Q, d);
+  }
   if (d.length !== curve.payloadSize) {
     const privateKey = new Uint8Array(curve.payloadSize);
     privateKey.set(d, curve.payloadSize - d.length);
@@ -188,9 +191,9 @@ async function genPrivateEphemeralKey(curve, V, Q, d) {
  * @returns {Promise<Uint8Array>} Value derived from session key.
  * @async
  */
-export async function decrypt(oid, kdfParams, V, C, Q, d, fingerprint) {
+export async function decrypt(oid, kdfParams, V, C, Q, d, fingerprint, plugin = null) {
   const curve = new Curve(oid);
-  const { sharedKey } = await genPrivateEphemeralKey(curve, V, Q, d);
+  const { sharedKey } = await genPrivateEphemeralKey(curve, V, Q, d, plugin);
   const param = buildEcdhParam(enums.publicKey.ecdh, oid, kdfParams, fingerprint);
   const { keySize } = getCipher(kdfParams.cipher);
   let err;
