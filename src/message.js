@@ -569,15 +569,16 @@ export class Message {
    * @param {Date} [date] - Override the creation time of the signature
    * @param {Array} [userIDs] - User IDs to sign with, e.g. [{ name:'Steve Sender', email:'steve@openpgp.org' }]
    * @param {Object} [config] - Full configuration, defaults to openpgp.config
+   * @param plugin
    * @returns {Promise<Signature>} New detached signature of message content.
    * @async
    */
-  async signDetached(signingKeys = [], signature = null, signingKeyIDs = [], date = new Date(), userIDs = [], config = defaultConfig) {
+  async signDetached(signingKeys = [], signature = null, signingKeyIDs = [], date = new Date(), userIDs = [], config = defaultConfig, plugin = null) {
     const literalDataPacket = this.packets.findPacket(enums.packet.literalData);
     if (!literalDataPacket) {
       throw new Error('No literal data packet to sign.');
     }
-    return new Signature(await createSignaturePackets(literalDataPacket, signingKeys, signature, signingKeyIDs, date, userIDs, true, config));
+    return new Signature(await createSignaturePackets(literalDataPacket, signingKeys, signature, signingKeyIDs, date, userIDs, true, config, plugin));
   }
 
   /**
@@ -712,11 +713,12 @@ export class Message {
  * @param {Array} [userIDs] - User IDs to sign with, e.g. [{ name:'Steve Sender', email:'steve@openpgp.org' }]
  * @param {Boolean} [detached] - Whether to create detached signature packets
  * @param {Object} [config] - Full configuration, defaults to openpgp.config
+ * @param plugin
  * @returns {Promise<PacketList>} List of signature packets.
  * @async
  * @private
  */
-export async function createSignaturePackets(literalDataPacket, signingKeys, signature = null, signingKeyIDs = [], date = new Date(), userIDs = [], detached = false, config = defaultConfig) {
+export async function createSignaturePackets(literalDataPacket, signingKeys, signature = null, signingKeyIDs = [], date = new Date(), userIDs = [], detached = false, config = defaultConfig, plugin = null) {
   const packetlist = new PacketList();
 
   // If data packet was created from Uint8Array, use binary, otherwise use text
@@ -729,7 +731,7 @@ export async function createSignaturePackets(literalDataPacket, signingKeys, sig
       throw new Error('Need private key for signing');
     }
     const signingKey = await primaryKey.getSigningKey(signingKeyIDs[i], date, userID, config);
-    return createSignaturePacket(literalDataPacket, primaryKey, signingKey.keyPacket, { signatureType }, date, userID, detached, config);
+    return createSignaturePacket(literalDataPacket, primaryKey, signingKey.keyPacket, { signatureType }, date, userID, detached, config, plugin);
   })).then(signatureList => {
     packetlist.push(...signatureList);
   });

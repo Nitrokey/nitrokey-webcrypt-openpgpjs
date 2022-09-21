@@ -389,11 +389,12 @@ export async function decrypt({ message, decryptionKeys, passwords, sessionKeys,
  * @param {Date} [options.date=current date] - Override the creation date of the signature
  * @param {Object|Object[]} [options.signingUserIDs=primary user IDs] - Array of user IDs to sign with, one per key in `signingKeys`, e.g. `[{ name: 'Steve Sender', email: 'steve@openpgp.org' }]`
  * @param {Object} [options.config] - Custom configuration settings to overwrite those in [config]{@link module:config}
+ * @param {Object} [plugin] - Callbacks plugin
  * @returns {Promise<MaybeStream<String|Uint8Array>>} Signed message (string if `armor` was true, the default; Uint8Array if `armor` was false).
  * @async
  * @static
  */
-export async function sign({ message, signingKeys, format = 'armored', detached = false, signingKeyIDs = [], date = new Date(), signingUserIDs = [], config, ...rest }) {
+export async function sign({ message, signingKeys, format = 'armored', detached = false, signingKeyIDs = [], date = new Date(), signingUserIDs = [], config, plugin = null, ...rest }) {
   config = { ...defaultConfig, ...config }; checkConfig(config);
   checkCleartextOrMessage(message); checkOutputMessageFormat(format);
   signingKeys = toArray(signingKeys); signingKeyIDs = toArray(signingKeyIDs); signingUserIDs = toArray(signingUserIDs);
@@ -412,9 +413,9 @@ export async function sign({ message, signingKeys, format = 'armored', detached 
   try {
     let signature;
     if (detached) {
-      signature = await message.signDetached(signingKeys, undefined, signingKeyIDs, date, signingUserIDs, config);
+      signature = await message.signDetached(signingKeys, undefined, signingKeyIDs, date, signingUserIDs, config, plugin);
     } else {
-      signature = await message.sign(signingKeys, undefined, signingKeyIDs, date, signingUserIDs, config);
+      signature = await message.sign(signingKeys, undefined, signingKeyIDs, date, signingUserIDs, config, plugin);
     }
     if (format === 'object') return signature;
 

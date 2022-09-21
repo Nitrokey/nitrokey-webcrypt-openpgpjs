@@ -628,6 +628,7 @@ interface SignOptions {
   date?: Date;
   signingUserIDs?: MaybeArray<UserID>;
   config?: PartialConfig;
+  plugin?: any;
 }
 
 interface VerifyOptions {
