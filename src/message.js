@@ -731,6 +731,8 @@ export async function createSignaturePackets(literalDataPacket, signingKeys, sig
       throw new Error('Need private key for signing');
     }
     const signingKey = await primaryKey.getSigningKey(signingKeyIDs[i], date, userID, config);
+    // eslint-disable-next-line no-console
+    console.log('before create sign packet', { signingKey });
     return createSignaturePacket(literalDataPacket, primaryKey, signingKey.keyPacket, { signatureType }, date, userID, detached, config, plugin);
   })).then(signatureList => {
     packetlist.push(...signatureList);
@@ -771,6 +773,9 @@ async function createVerificationObject(signature, literalDataList, verification
       break;
     }
   }
+
+  // eslint-disable-next-line no-console
+  console.log('trying to verify signature with', { verificationKeys, signature });
 
   const isOnePassSignature = signature instanceof OnePassSignaturePacket;
   const signaturePacketPromise = isOnePassSignature ? signature.correspondingSig : signature;

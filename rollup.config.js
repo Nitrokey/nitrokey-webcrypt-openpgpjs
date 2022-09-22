@@ -5,7 +5,7 @@ import { builtinModules } from 'module';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
-import { terser } from 'rollup-plugin-terser';
+// import { terser } from 'rollup-plugin-terser';
 
 import pkg from './package.json';
 
@@ -18,25 +18,25 @@ const banner =
 
 const intro = "const globalThis = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};";
 
-const terserOptions = {
-  ecma: 2017,
-  compress: {
-    unsafe: true
-  },
-  output: {
-    comments: '/^(?:!|#__)/',
-    preserve_annotations: true
-  }
-};
+// const terserOptions = {
+//   ecma: 2017,
+//   compress: {
+//     unsafe: true
+//   },
+//   output: {
+//     comments: '/^(?:!|#__)/',
+//     preserve_annotations: true
+//   }
+// };
 
 export default Object.assign([
   {
     input: 'src/index.js',
     output: [
-      { file: 'dist/openpgp.js', format: 'iife', name: pkg.name, banner, intro },
-      { file: 'dist/openpgp.min.js', format: 'iife', name: pkg.name, banner, intro, plugins: [terser(terserOptions)], sourcemap: true },
-      { file: 'dist/openpgp.mjs', format: 'es', banner, intro },
-      { file: 'dist/openpgp.min.mjs', format: 'es', banner, intro, plugins: [terser(terserOptions)], sourcemap: true }
+      { file: 'dist/openpgp.js', format: 'iife', name: pkg.name, banner, intro, sourcemap: true },
+      { file: 'dist/openpgp.min.js', format: 'iife', name: pkg.name, banner, intro, sourcemap: true },
+      { file: 'dist/openpgp.mjs', format: 'es', banner, intro, sourcemap: true },
+      { file: 'dist/openpgp.min.mjs', format: 'es', banner, intro, sourcemap: true }
     ],
     inlineDynamicImports: true,
     plugins: [
@@ -75,7 +75,7 @@ export default Object.assign([
     input: 'src/index.js',
     output: [
       { dir: 'dist/lightweight', entryFileNames: 'openpgp.mjs', chunkFileNames: '[name].mjs', format: 'es', banner, intro },
-      { dir: 'dist/lightweight', entryFileNames: 'openpgp.min.mjs', chunkFileNames: '[name].min.mjs', format: 'es', banner, intro, plugins: [terser(terserOptions)], sourcemap: true }
+      { dir: 'dist/lightweight', entryFileNames: 'openpgp.min.mjs', chunkFileNames: '[name].min.mjs', format: 'es', banner, intro, sourcemap: true }
     ],
     preserveEntrySignatures: 'allow-extension',
     plugins: [

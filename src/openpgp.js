@@ -67,6 +67,8 @@ export async function generateKey({ userIDs = [], passphrase, type = 'ecc', rsaB
 
   const options = { userIDs, passphrase, type, rsaBits, curve, keyExpirationTime, date, subkeys };
 
+  console.log('run key generation in sequence (before)');
+
   try {
     const { key, revocationCertificate } = await generate(options, config, plugin);
     key.getKeys().forEach(({ keyPacket }) => checkKeyRequirements(keyPacket, config));

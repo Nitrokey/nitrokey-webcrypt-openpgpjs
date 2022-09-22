@@ -238,7 +238,7 @@ async function generate(curve, plugin) {
     secret = new BigInteger(keyPair.privateKey).toUint8Array('be', curve.payloadSize);
   }
   // eslint-disable-next-line no-console
-  console.log({Q, secret}); // FIXME remove
+  console.log({ Q, secret, name:'curves generate' }); // FIXME remove
   return {
     oid: curve.oid,
     Q,

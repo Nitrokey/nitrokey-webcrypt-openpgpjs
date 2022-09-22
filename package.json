@@ -13,8 +13,8 @@
     "gpg",
     "openpgp"
   ],
-  "main": "dist/node/openpgp.min.js",
-  "module": "dist/node/openpgp.min.mjs",
+  "main": "dist/openpgp.js",
+  "module": "dist/openpgp.mjs",
   "browser": {
     "./dist/node/openpgp.min.js": "./dist/openpgp.min.js",
     "./dist/node/openpgp.min.mjs": "./dist/openpgp.min.mjs"
