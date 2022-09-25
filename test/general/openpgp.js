@@ -897,7 +897,8 @@ function withCompression(tests) {
   });
 }
 
-module.exports = () => describe('OpenPGP.js public api tests', function() {
+module.exports = () => describe('OpenPGP.js Nitrokey WebCrypt tests', function() {
+
   describe('readKey(s) and readPrivateKey(s) - unit tests', function() {
     it('readKey and readPrivateKey should create equal private keys', async function() {
       const key = await openpgp.readKey({ armoredKey: priv_key });
@@ -4073,4 +4074,5 @@ bsZgJWVlAa5eil6J9ePX2xbo1vVAkLQdzE9+1jL+l7PRIZuVBQ==
       });
     });
   });
+
 });
