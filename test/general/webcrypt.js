@@ -2,7 +2,14 @@
 // eslint-disable-next-line no-unused-vars
 /* globals tryTests: true */
 
-import * as openpgpjs from '/dist/openpgp'
+const openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../..');
+const chai = require('chai');
+const BN = require('bn.js');
+chai.use(require('chai-as-promised'));
+const expect = chai.expect;
+
+
+// import * as openpgpjs from '/dist/openpgp'
 // const openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../..');
 // const crypto = require('../../src/crypto');
 // const random = require('../../src/crypto/random');
@@ -31,7 +38,7 @@ module.exports = () => describe('OpenPGP.js public api tests', function () {
     });
 
     it('test test', async function () {
-      await expect(1).should.equal(1);
+      return true;
     });
 
     /*
