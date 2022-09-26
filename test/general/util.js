@@ -1,10 +1,3 @@
-// import wc from 'nitrokey_webcrypt';
-// const wc = require('nitrokey_webcrypt');
-
-const webcrypt = require('nitrokey_webcrypt/dist/webcrypt.min');
-const { WEBCRYPT_STATUS, WEBCRYPT_OPENPGP_GENERATE } = webcrypt;
-
-
 const util = require('../../src/util');
 
 const chai = require('chai');
@@ -16,19 +9,6 @@ const { expect } = chai;
 
 module.exports = () => describe('Util unit tests', function() {
 
-  describe('webcrypt WebCrypt decrypt - unit tests', function () {
-    it('test test', async function () {
-      // eslint-disable-next-line new-cap
-      // await WEBCRYPT_STATUS(console.log);
-      // eslint-disable-next-line new-cap
-      await WEBCRYPT_STATUS(console.log);
-      // eslint-disable-next-line new-cap
-      // await WEBCRYPT_OPENPGP_GENERATE(s => { return s; });
-      // console.log('aaa', {wc});
-      // await wc.WEBCRYPT_OPENPGP_GENERATE(s => { return s; });
-      return true;
-    });
-  });
 
   describe('isString', function() {
     it('should return true for type "string"', function() {

@@ -1,24 +1,16 @@
-/* eslint-disable max-lines */
-// eslint-disable-next-line no-unused-vars
-/* globals tryTests: true */
+const webcrypt = require('nitrokey_webcrypt/dist/webcrypt.min');
+const { WEBCRYPT_STATUS, WEBCRYPT_OPENPGP_GENERATE } = webcrypt;
 
-// import { WEBCRYPT_STATUS, WEBCRYPT_OPENPGP_GENERATE } from 'nitrokey_webcrypt';
-const { WEBCRYPT_STATUS, WEBCRYPT_OPENPGP_GENERATE } = require('nitrokey_webcrypt');
-// import * as webcrypt from 'nitrokey_webcrypt';
+const chai = require('chai');
 
-// window.webcrypt = webcrypt;
-// const { WEBCRYPT_STATUS, WEBCRYPT_OPENPGP_GENERATE } = require('nitrokey_webcrypt');
+const { expect } = chai;
 
-// const util = require('../../src/util');
 
-// import { WEBCRYPT_OPENPGP_GENERATE } from '../../../webcrypt-js-lib/js/webcrypt';
-// import * as webcrypt from 'nitrokey_webcrypt';
-
-// const openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../..');
+// http://localhost:8080/test/unittests.html?grep=Unit%20Tests%20General%20OpenPGP%5C.js%20webcrypt%20public%20api%20tests%20WebCrypt%20general%20%5Cx2d%20unit%20tests%20Status%20test
 
 module.exports = () => describe('OpenPGP.js webcrypt public api tests', function () {
 
-  describe('webcrypt WebCrypt decrypt - unit tests', function () {
+  describe('WebCrypt general - unit tests', function () {
 
     beforeEach(async function () {
     });
@@ -26,16 +18,11 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
     afterEach(function () {
     });
 
-    it('test test', async function () {
-      // eslint-disable-next-line new-cap
-      // await WEBCRYPT_STATUS(console.log);
-      // eslint-disable-next-line new-cap
-      await WEBCRYPT_STATUS(console.log);
-      // eslint-disable-next-line new-cap
-      // await WEBCRYPT_OPENPGP_GENERATE(console.log);
+    it('Status test', async function () {
+      const res = await WEBCRYPT_STATUS(console.log);
+      expect(res["UNLOCKED"]).to.be.false;
       return true;
     });
-
 
   });
 
