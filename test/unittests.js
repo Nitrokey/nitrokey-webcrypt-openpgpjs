@@ -55,8 +55,8 @@ describe('Unit Tests', function () {
     });
   }
 
-  require('./crypto')();
   require('./general')();
-  require('./worker')();
-  require('./security')();
+  require('./crypto')();
+  // require('./worker')();
+  // require('./security')();
 });

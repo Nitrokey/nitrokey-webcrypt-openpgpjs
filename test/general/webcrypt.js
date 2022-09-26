@@ -12,10 +12,7 @@ import * as openpgpjs from '/dist/openpgp'
 
 // const stream = require('@openpgp/web-stream-tools');
 // const spy = require('sinon/lib/sinon/spy');
-const chai = require('chai');
-chai.use(require('chai-as-promised'));
 
-const expect = chai.expect;
 
 // const detectNode = () => typeof globalThis.process === 'object' && typeof globalThis.process.versions === 'object';
 
