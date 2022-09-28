@@ -36,6 +36,7 @@
   "scripts": {
     "build": "rollup --config",
     "build-test": "npm run build --build-only=test",
+    "build-test-watch": "npm run build --build-only=test -- --watch",
     "prepare": "npm run build",
     "test": "mocha --require esm --timeout 120000 test/unittests.js",
     "test-type-definitions": "tsc test/typescript/definitions.ts && node test/typescript/definitions.js",
