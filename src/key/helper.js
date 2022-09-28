@@ -213,8 +213,6 @@ export async function createSignaturePacket(dataToSign, privateKey, signingKeyPa
   Object.assign(signaturePacket, signatureProperties);
   signaturePacket.publicKeyAlgorithm = signingKeyPacket.algorithm;
   signaturePacket.hashAlgorithm = await getPreferredHashAlgo(privateKey, signingKeyPacket, date, userID, config);
-  // eslint-disable-next-line no-console
-  console.log('before create sign packet signing');
   await signaturePacket.sign(signingKeyPacket, dataToSign, date, detached, plugin);
   return signaturePacket;
 }

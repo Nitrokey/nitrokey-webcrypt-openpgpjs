@@ -66,21 +66,16 @@ export async function generate(options, config, plugin) {
   options.sign = true; // primary key is always a signing key
   options = helper.sanitizeKeyOptions(options);
   options.subkeys = options.subkeys.map((subkey, index) => helper.sanitizeKeyOptions(options.subkeys[index], options));
+
   // let promises = [helper.generateSecretKey(options, config, plugin)];
-  console.log('run key generation in sequence');
+  // run key generation in sequence (needed for proper key order while importing through plugin)
   const main_packet = await helper.generateSecretKey(options, config, plugin);
   const promises = [].concat(options.subkeys.map(options => helper.generateSecretSubkey(options, config, plugin)));
   const packets = [main_packet].concat(await Promise.all(promises));
 
-  // eslint-disable-next-line no-console
-  console.log('before wrap key');
-
   const key = await wrapKeyObject(packets[0], packets.slice(1), options, config, plugin);
-  console.log('before revcert');
-  // const revocationCertificate = await key.getRevocationCertificate(options.date, config);
-  const revocationCertificate = null;
+  const revocationCertificate = await key.getRevocationCertificate(options.date, config);
   key.revocationSignatures = [];
-  console.log('before final return ');
   return { key, revocationCertificate };
 }
 
@@ -184,9 +179,6 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
       return [preferredAlgo, ...algos.filter(algo => algo !== preferredAlgo)];
     }
 
-    console.log('before idpacket');
-
-
     const userIDPacket = UserIDPacket.fromObject(userID);
     const dataToSign = {};
     dataToSign.userID = userIDPacket;
@@ -194,7 +186,6 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
     const signaturePacket = new SignaturePacket();
     signaturePacket.signatureType = enums.signature.certGeneric;
     signaturePacket.publicKeyAlgorithm = secretKeyPacket.algorithm;
-    console.log('before preff');
 
     signaturePacket.hashAlgorithm = await helper.getPreferredHashAlgo(null, secretKeyPacket, undefined, undefined, config);
     signaturePacket.keyFlags = [enums.keyFlags.certifyKeys | enums.keyFlags.signData];
@@ -236,7 +227,6 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
       signaturePacket.keyExpirationTime = options.keyExpirationTime;
       signaturePacket.keyNeverExpires = false;
     }
-    console.log('before sign');
     await signaturePacket.sign(secretKeyPacket, dataToSign, options.date, false, plugin);
 
     return { userIDPacket, signaturePacket };
@@ -247,9 +237,6 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
     });
   });
 
-  console.log('before subkey packets');
-
-  // plugin based needs signing for that
   await Promise.all(secretSubkeyPackets.map(async function(secretSubkeyPacket, index) {
     const subkeyOptions = options.subkeys[index];
     const subkeySignaturePacket = await helper.createBindingSignature(secretSubkeyPacket, secretKeyPacket, subkeyOptions, config, plugin);
@@ -264,10 +251,7 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
   // Add revocation signature packet for creating a revocation certificate.
   // This packet should be removed before returning the key.
 
-  console.log('before subkey packets sign');
 
-
-  // software key does not work without below
   const dataToSign = { key: secretKeyPacket };
   packetlist.push(await helper.createSignaturePacket(dataToSign, null, secretKeyPacket, {
     signatureType: enums.signature.keyRevocation,
@@ -279,15 +263,12 @@ async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, conf
     secretKeyPacket.clearPrivateParams();
   }
 
-  console.log('before subkey packets clear');
-
   await Promise.all(secretSubkeyPackets.map(async function(secretSubkeyPacket, index) {
     const subkeyPassphrase = options.subkeys[index].passphrase;
     if (subkeyPassphrase) {
       secretSubkeyPacket.clearPrivateParams();
     }
   }));
-  console.log('before return');
 
   return new PrivateKey(packetlist);
 }

@@ -27,8 +27,6 @@ import * as stream from '@openpgp/web-stream-tools';
 import { getBigInteger } from './biginteger';
 
 const debugMode = (() => {
-  return true;
-  // eslint-disable-next-line no-unreachable
   try {
     return process.env.NODE_ENV === 'development'; // eslint-disable-line no-process-env
   } catch (e) {}

@@ -189,15 +189,6 @@ async function webSign(curve, hashAlgo, message, keyPair) {
     ['sign']
   );
 
-  // eslint-disable-next-line no-console
-  console.log('Signing data', {
-    'name': 'ECDSA',
-    'namedCurve': webCurves[curve.name],
-    'hash': { name: enums.read(enums.webHash, hashAlgo) },
-    key,
-    message
-  });
-
   const signature = new Uint8Array(await webCrypto.sign(
     {
       'name': 'ECDSA',
@@ -229,16 +220,6 @@ async function webVerify(curve, hashAlgo, { r, s }, message, publicKey) {
   );
 
   const signature = util.concatUint8Array([r, s]).buffer;
-
-  // eslint-disable-next-line no-console
-  console.log('Calling verify with', {
-    'name': 'ECDSA',
-    'namedCurve': webCurves[curve.name],
-    'hash': { name: enums.read(enums.webHash, hashAlgo) },
-    key,
-    signature,
-    message
-  });
 
   return webCrypto.verify(
     {

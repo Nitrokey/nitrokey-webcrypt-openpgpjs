@@ -4,8 +4,6 @@ const chai = require('chai');
 
 const { expect } = chai;
 
-// import { WEBCRYPT_STATUS, WEBCRYPT_OPENPGP_GENERATE } from 'nitrokey_webcrypt/dist/webcrypt.min.mjs';
-
 
 module.exports = () => describe('Util unit tests', function() {
 

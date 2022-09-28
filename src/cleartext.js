@@ -73,7 +73,6 @@ export class CleartextMessage {
   async sign(privateKeys, signature = null, signingKeyIDs = [], date = new Date(), userIDs = [], config = defaultConfig, plugin = null) {
     const literalDataPacket = new LiteralDataPacket();
     literalDataPacket.setText(this.text);
-    console.log('before new signature');
     const newSignature = new Signature(await createSignaturePackets(literalDataPacket, privateKeys, signature, signingKeyIDs, date, userIDs, true, config, plugin));
     return new CleartextMessage(this.text, newSignature);
   }

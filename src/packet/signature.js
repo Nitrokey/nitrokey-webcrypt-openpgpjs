@@ -199,7 +199,6 @@ class SignaturePacket {
     const signed = async () => crypto.signature.sign(
       this.publicKeyAlgorithm, this.hashAlgorithm, key.publicParams, key.privateParams, toHash, await stream.readToEnd(hash), plugin
     );
-    console.log('before actual signing');
     if (util.isStream(hash)) {
       this.params = signed();
     } else {
