@@ -4,9 +4,7 @@ const chai = require('chai');
 
 const { expect } = chai;
 
-
 module.exports = () => describe('Util unit tests', function() {
-
 
   describe('isString', function() {
     it('should return true for type "string"', function() {
