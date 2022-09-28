@@ -159,6 +159,8 @@ export async function reformat(options, config) {
  * @param {SecretSubkeyPacket} secretSubkeyPackets
  * @param {Object} options
  * @param {Object} config - Full configuration
+ * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+ * @param {function(Uint8Array):Uint8Array} plugin.sign - Async function for signing data
  * @returns {PrivateKey}
  */
 async function wrapKeyObject(secretKeyPacket, secretSubkeyPackets, options, config, plugin = null) {

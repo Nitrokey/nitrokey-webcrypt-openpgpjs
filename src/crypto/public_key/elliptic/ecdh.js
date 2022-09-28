@@ -145,6 +145,8 @@ export async function encrypt(oid, kdfParams, data, Q, fingerprint) {
  * @param {Uint8Array} V - Public part of ephemeral key
  * @param {Uint8Array} Q - Recipient public key
  * @param {Uint8Array} d - Recipient private key
+ * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+ * @param {function} plugin.agree - Async function for calculation of the shared secret (only for ECC)
  * @returns {Promise<{secretKey: Uint8Array, sharedKey: Uint8Array}>}
  * @async
  */
@@ -188,6 +190,8 @@ async function genPrivateEphemeralKey(curve, V, Q, d, plugin = null) {
  * @param {Uint8Array} Q - Recipient public key
  * @param {Uint8Array} d - Recipient private key
  * @param {Uint8Array} fingerprint - Recipient fingerprint
+ * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+ * @param {function} plugin.agree - Async function for calculation of the shared secret (only for ECC)
  * @returns {Promise<Uint8Array>} Value derived from session key.
  * @async
  */

@@ -79,7 +79,9 @@ export async function publicKeyEncrypt(algo, publicParams, data, fingerprint) {
  * @param {Uint8Array} fingerprint - Recipient fingerprint
  * @param {Uint8Array} [randomPayload] - Data to return on decryption error, instead of throwing
  *                                    (needed for constant-time processing in RSA and ElGamal)
- * @param {Object} [plugin] - Plugin callbacks
+ * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+ * @param {function} plugin.decrypt - Async function for decrypting data (only for RSA)
+ * @param {function} plugin.agree - Async function for calculation of the shared secret (only for ECC)
  * @returns {Promise<Uint8Array>} Decrypted data.
  * @throws {Error} on sensitive decryption error, unless `randomPayload` is given
  * @async

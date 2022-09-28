@@ -169,7 +169,8 @@ class SignaturePacket {
    * @param {Object} data - Contains packets to be signed.
    * @param {Date} [date] - The signature creation time.
    * @param {Boolean} [detached] - Whether to create a detached signature
-   * @param {Object} [plugin] plugin object with callbacks
+   * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+   * @param {function(Uint8Array):Uint8Array} plugin.sign - Async function for signing data
    * @throws {Error} if signing failed
    * @async
    */

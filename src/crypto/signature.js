@@ -117,7 +117,8 @@ export async function verify(algo, hashAlgo, signature, publicParams, data, hash
  * @param {Object} privateKeyParams - Algorithm-specific public and private key parameters
  * @param {Uint8Array} data - Data to be signed
  * @param {Uint8Array} hashed - The hashed data
- * @param {async function(Uint8Array):Uint8Array} plugin.sign - function
+ * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+ * @param {function(Uint8Array):Uint8Array} plugin.sign - Async function for signing data
  * @returns {Promise<Object>} Signature                      Object containing named signature parameters.
  * @async
  */

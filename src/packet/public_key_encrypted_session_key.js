@@ -114,7 +114,9 @@ class PublicKeyEncryptedSessionKeyPacket {
    * @param {SecretKeyPacket} key - decrypted private key
    * @param {Object} [randomSessionKey] - Bogus session key to use in case of sensitive decryption error, or if the decrypted session key is of a different type/size.
    *                                      This is needed for constant-time processing. Expected object of the form: { sessionKey: Uint8Array, sessionKeyAlgorithm: enums.symmetric }
-   * @param {Object} plugin - Plugin callbacks
+   * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+   * @param {function} plugin.decrypt - Async function for decrypting data (only for RSA)
+   * @param {function} plugin.agree - Async function for calculation of the shared secret (only for ECC)
    * @throws {Error} if decryption failed, unless `randomSessionKey` is given
    * @async
    */

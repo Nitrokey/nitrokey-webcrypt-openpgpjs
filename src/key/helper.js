@@ -85,6 +85,8 @@ export function isDataExpired(keyPacket, signature, date = new Date()) {
  * @param {SecretKeyPacket} primaryKey - Primary key packet
  * @param {Object} options
  * @param {Object} config - Full configuration
+ * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+ * @param {function(Uint8Array):Uint8Array} plugin.sign - Async function for signing data
  */
 export async function createBindingSignature(subkey, primaryKey, options, config, plugin = null) {
   const dataToSign = {};
@@ -196,6 +198,8 @@ export async function getPreferredAlgo(type, keys = [], date = new Date(), userI
  * @param {Object} [userID] - User ID
  * @param {Object} [detached] - Whether to create a detached signature packet
  * @param {Object} config - full configuration
+ * @param {Object} [plugin] - Object with callbacks for overwriting the standard behavior with the private key
+ * @param {function(Uint8Array):Uint8Array} plugin.sign - Async function for signing data
  * @returns {Promise<SignaturePacket>} Signature packet.
  */
 export async function createSignaturePacket(dataToSign, privateKey, signingKeyPacket, signatureProperties, date, userID, detached = false, config, plugin = null) {
