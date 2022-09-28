@@ -85,6 +85,7 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       const res = await WEBCRYPT_STATUS(statusCallback);
       expect(res.UNLOCKED).to.be.false;
       expect(res).to.have.any.keys('UNLOCKED', 'VERSION', 'ATTEMPTS');
+      console.log('Webcrypt status output, including version', { res, version: hexStringToByte(res.VERSION) });
       return true;
     });
 
