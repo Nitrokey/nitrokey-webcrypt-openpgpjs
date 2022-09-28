@@ -10,7 +10,7 @@ import crypto from '../crypto';
 import util from '../util';
 import defaultConfig from '../config';
 
-export async function generateSecretSubkey(options, config, plugin) {
+export async function generateSecretSubkey(options, config, plugin = null) {
   if (plugin !== null) {
     plugin.type = 'sub';
     plugin.dataSubkey = { options, config };
@@ -23,7 +23,7 @@ export async function generateSecretSubkey(options, config, plugin) {
   return secretSubkeyPacket;
 }
 
-export async function generateSecretKey(options, config, plugin) {
+export async function generateSecretKey(options, config, plugin = null) {
   if (plugin !== null) {
     plugin.type = 'main';
     plugin.dataMain = { options, config };
