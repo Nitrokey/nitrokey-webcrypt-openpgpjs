@@ -229,19 +229,22 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       console.log({ sw: publicKey.keyPacket.publicParams.Q, wc: webcrypt_openpgp_keys_current.sign_pubkey });
       expect(publicKey.keyPacket.publicParams.Q, 'Main key public key check').to.be.deep.equal(webcrypt_openpgp_keys_current.sign_pubkey);
       expect(publicKey.subkeys[0].keyPacket.publicParams.Q, 'Subkey public key check').to.be.deep.equal(webcrypt_openpgp_keys_current.encr_pubkey);
+    });
 
+    it('OpenPGPjs imported key import to WebCrypt', async function () {
       // reset plugin cached info
       await plugin.init();
 
-      // test new key import to the openpgp space
-      const { privateKey: webcrypt_privateKey_after_import, publicKey: webcrypt_publicKey_after_import } = await openpgp.generateKey({
+      const { privateKey: lwebcrypt_privateKey, publicKey: lwebcrypt_publicKey } = await openpgp.generateKey({
         curve: 'webcrypt_p256',
         userIDs: [{ name: 'Jon Smith', email: 'jon@example.com' }],
         format: 'object',
         date: plugin.date(),
         plugin: plugin
       });
-      console.log({ webcrypt_privateKey_after_import, webcrypt_publicKey_after_import });
+      console.log({ lwebcrypt_privateKey, lwebcrypt_publicKey });
+      webcrypt_privateKey = lwebcrypt_privateKey;
+      webcrypt_publicKey = lwebcrypt_publicKey;
     });
 
 
