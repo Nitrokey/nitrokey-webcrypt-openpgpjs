@@ -15,6 +15,7 @@ const {
   WEBCRYPT_STATUS,
   WEBCRYPT_OPENPGP_GENERATE,
   Webcrypt_Logout,
+  Webcrypt_FactoryReset,
   WEBCRYPT_OPENPGP_DECRYPT,
   WEBCRYPT_OPENPGP_SIGN,
   WEBCRYPT_OPENPGP_INFO,
@@ -91,6 +92,7 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
 
     it('Status test', async function () {
       await Webcrypt_Logout(statusCallback);
+      await Webcrypt_FactoryReset(statusCallback);
       const res = await WEBCRYPT_STATUS(statusCallback);
       expect(res.UNLOCKED).to.be.false;
       expect(res).to.have.any.keys('UNLOCKED', 'VERSION', 'ATTEMPTS');
