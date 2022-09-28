@@ -1,6 +1,14 @@
 /* eslint-disable no-console,new-cap,one-var */
+
+// Nitrokey WebCrypt integration tests
+// Start this test by opening below:
+// http://localhost:8080/test/unittests.html
+// or running `make test` in the main directory
+// note: using 127.0.0.1 will not work
+
 const openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../..');
 const webcrypt = require('nitrokey_webcrypt/dist/webcrypt.min');
+const chai = require('chai');
 
 const {
   hexStringToByte,
@@ -12,18 +20,14 @@ const {
   WEBCRYPT_OPENPGP_INFO,
   WEBCRYPT_OPENPGP_IMPORT
 } = webcrypt;
-
-const chai = require('chai');
-
 const { expect } = chai;
-
-// http://localhost:8080/test/unittests.html
 
 module.exports = () => describe('OpenPGP.js webcrypt public api tests', function () {
 
   describe('WebCrypt general - unit tests', function () {
 
-    let webcrypt_privateKey, webcrypt_publicKey;
+    let webcrypt_privateKey,
+      webcrypt_publicKey;
     const statusCallback = s => (console.log(s));
 
     const plugin = {
@@ -38,7 +42,12 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
           this.public_encr = res.encr_pubkey;
           this.public_sign = res.sign_pubkey;
           this.webcrypt_date = res.date;
-          console.log({ sign: this.public_sign, enc: this.public_encr, date: this.webcrypt_date, date_comp: this.date() }, 'info call results');
+          console.log({
+            sign: this.public_sign,
+            enc: this.public_encr,
+            date: this.webcrypt_date,
+            date_comp: this.date()
+          }, 'info call results');
         }
       },
       agree: async function (curve, V, Q, d) {
@@ -55,7 +64,7 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       sign: async function (oid, hashAlgo, data, Q, d, hashed) {
         console.log('sign', { oid, hashAlgo, data, Q, d, hashed, plugin: this, name: 'sign' });
         // TODO investigate, why data/message is used for signing and verification, and not the hash
-        // TODO ...., why signatures during key generation and use are not verified
+        // TODO investigate, why signatures during key generation and use are not verified
         // const res = await WEBCRYPT_OPENPGP_SIGN(statusCallback, hashed);
         const res = await WEBCRYPT_OPENPGP_SIGN(statusCallback, data);
         const resb = hexStringToByte(res);
@@ -85,7 +94,10 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       const res = await WEBCRYPT_STATUS(statusCallback);
       expect(res.UNLOCKED).to.be.false;
       expect(res).to.have.any.keys('UNLOCKED', 'VERSION', 'ATTEMPTS');
-      console.log('Webcrypt status output, including version', { res, version: hexStringToByte(res.VERSION) });
+      console.log('Webcrypt status output, including version', {
+        res,
+        version: new TextDecoder().decode(hexStringToByte(res.VERSION_STRING))
+      });
       return true;
     });
 
@@ -261,9 +273,9 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       await plugin.init();
     });
 
-    it('Next test', async function () {
-      return true;
-    });
+    // it('Next test', async function () {
+    //   return true;
+    // });
 
 
   });
