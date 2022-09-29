@@ -616,6 +616,7 @@ interface DecryptOptions {
   /** (optional) use the given date for verification instead of the current time */
   date?: Date;
   config?: PartialConfig;
+  plugin?: any;
 }
 
 interface SignOptions {
@@ -627,6 +628,7 @@ interface SignOptions {
   date?: Date;
   signingUserIDs?: MaybeArray<UserID>;
   config?: PartialConfig;
+  plugin?: any;
 }
 
 interface VerifyOptions {
