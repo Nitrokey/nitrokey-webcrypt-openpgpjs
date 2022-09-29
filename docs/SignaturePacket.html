@@ -423,7 +423,7 @@ block of text, and a signature that is a certification of a User ID.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L742">line 742</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L744">line 744</a>
     </li></ul></dd>
     
 
@@ -599,7 +599,7 @@ block of text, and a signature that is a certification of a User ID.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L730">line 730</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L732">line 732</a>
     </li></ul></dd>
     
 
@@ -818,7 +818,7 @@ block of text, and a signature that is a certification of a User ID.</p></div>
     
 
     
-    <h4 class="name" id="sign"><span class="type-signature">(async) </span>sign<span class="signature">(key, data, date<span class="signature-attributes">opt</span>, detached<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="sign"><span class="type-signature">(async) </span>sign<span class="signature">(key, data, date<span class="signature-attributes">opt</span>, detached<span class="signature-attributes">opt</span>, plugin<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1009,6 +1009,94 @@ block of text, and a signature that is a certification of a User ID.</p></div>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>plugin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last"><p>Object with callbacks for overwriting the standard behavior with the private key</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sign</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Async function for signing data</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -1048,7 +1136,7 @@ block of text, and a signature that is a certification of a User ID.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L175">line 175</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L177">line 177</a>
     </li></ul></dd>
     
 
@@ -1427,7 +1515,7 @@ block of text, and a signature that is a certification of a User ID.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L662">line 662</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L664">line 664</a>
     </li></ul></dd>
     
 
@@ -1546,7 +1634,7 @@ block of text, and a signature that is a certification of a User ID.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L217">line 217</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L219">line 219</a>
     </li></ul></dd>
     
 
@@ -1765,7 +1853,7 @@ block of text, and a signature that is a certification of a User ID.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L321">line 321</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js">packet/signature.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/signature.js#L323">line 323</a>
     </li></ul></dd>
     
 

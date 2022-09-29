@@ -346,7 +346,7 @@ See <a href="https://tools.ietf.org/html/rfc4880#section-7">https://tools.ietf.o
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js">cleartext.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js#L112">line 112</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js">cleartext.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js#L114">line 114</a>
     </li></ul></dd>
     
 
@@ -573,7 +573,7 @@ See <a href="https://tools.ietf.org/html/rfc4880#section-7">https://tools.ietf.o
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js">cleartext.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js#L102">line 102</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js">cleartext.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js#L104">line 104</a>
     </li></ul></dd>
     
 
@@ -631,7 +631,7 @@ See <a href="https://tools.ietf.org/html/rfc4880#section-7">https://tools.ietf.o
     
 
     
-    <h4 class="name" id="sign"><span class="type-signature">(async) </span>sign<span class="signature">(privateKeys, signature<span class="signature-attributes">opt</span>, signingKeyIDs<span class="signature-attributes">opt</span>, date<span class="signature-attributes">opt</span>, userIDs<span class="signature-attributes">opt</span>, config<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="CleartextMessage.html">CleartextMessage</a>>}</span></h4>
+    <h4 class="name" id="sign"><span class="type-signature">(async) </span>sign<span class="signature">(privateKeys, signature<span class="signature-attributes">opt</span>, signingKeyIDs<span class="signature-attributes">opt</span>, date<span class="signature-attributes">opt</span>, userIDs<span class="signature-attributes">opt</span>, config<span class="signature-attributes">opt</span>, plugin<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="CleartextMessage.html">CleartextMessage</a>>}</span></h4>
     
 
     
@@ -898,6 +898,94 @@ See <a href="https://tools.ietf.org/html/rfc4880#section-7">https://tools.ietf.o
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>plugin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last"><p>Object with callbacks for overwriting the standard behavior with the private key</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sign</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Async function for signing data</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -937,7 +1025,7 @@ See <a href="https://tools.ietf.org/html/rfc4880#section-7">https://tools.ietf.o
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js">cleartext.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js#L71">line 71</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js">cleartext.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js#L73">line 73</a>
     </li></ul></dd>
     
 
@@ -1174,7 +1262,7 @@ See <a href="https://tools.ietf.org/html/rfc4880#section-7">https://tools.ietf.o
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js">cleartext.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js#L90">line 90</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js">cleartext.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/cleartext.js#L92">line 92</a>
     </li></ul></dd>
     
 
