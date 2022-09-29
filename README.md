@@ -647,6 +647,10 @@ private key on another medium than browser or PC, thus providing much greater, i
 secret material leaks. Additionally, this can increase usage control by introducing user confirmation 
 (e.g. through a touch button) for the private key operations.
 
+The plugin interface is realized by a plugin object containing callbacks to the defined private key operations: sign, decrypt,
+agree, generateKeyPair. The detailed description of each is provided in the below example. The plugin object is then passed
+to all related main OpenPGPjs operations. If that's omitted, the standard OpenPGPjs behavior will be executed.
+
 In the following implementation the host of the private key operations will be a Nitrokey WebCrypt device 
 (e.g. Nitrokey 3).  
 
@@ -654,7 +658,7 @@ In the following implementation the host of the private key operations will be a
 (async () => {
   const {
     hexStringToByte,
-    WEBCRYPT_OPENPGP_GENERATE,
+    WEBCRYPT_LOGIN,
     WEBCRYPT_OPENPGP_DECRYPT,
     WEBCRYPT_OPENPGP_SIGN,
     WEBCRYPT_OPENPGP_INFO,
@@ -746,10 +750,12 @@ In the following implementation the host of the private key operations will be a
     // This is a helper function to initialize plugin's properties. Specific to the current callbacks implementation. 
     init: async function () {
       if (this.public_sign === undefined) {
-        const res = await WEBCRYPT_OPENPGP_INFO(statusCallback);
-        this.public_encr = res.encr_pubkey;
-        this.public_sign = res.sign_pubkey;
-        this.webcrypt_date = res.date;
+        const PIN = '12345678';
+        await WEBCRYPT_LOGIN(statusCallback, { PIN });
+        const openpgp_info = await WEBCRYPT_OPENPGP_INFO(statusCallback);
+        this.public_encr = openpgp_info.encr_pubkey;
+        this.public_sign = openpgp_info.sign_pubkey;
+        this.webcrypt_date = openpgp_info.date;
       }
     }
   };
