@@ -652,10 +652,16 @@ agree, generateKeyPair. The detailed description of each is provided in the belo
 to all related main OpenPGPjs operations. If that's omitted, the standard OpenPGPjs behavior will be executed.
 
 In the following implementation the host of the private key operations will be a Nitrokey WebCrypt device 
-(e.g. Nitrokey 3).  
+(e.g. Nitrokey 3). Nitrokey WebCrypt uses Webauthn standard to create a communication channel with the security key
+handling it, which by design should allow to run it on any modern browser and platform.
+At the moment it is tested only in the Chrome-based browsers. Support for the Node.js requires additional implementation.
+More details at:
+- https://github.com/Nitrokey/nitrokey-webcrypt
+- https://github.com/Nitrokey/nitrokey-webcrypt-js
 
 ```javascript
 (async () => {
+  const openpgp = require('openpgp');
   const {
     hexStringToByte,
     WEBCRYPT_LOGIN,
@@ -830,7 +836,7 @@ In the following implementation the host of the private key operations will be a
 
 ```
 
-See`./test/general/webcrypt.js` for complete usage example.
+See`./test/general/webcrypt.js` for the complete usage example.
 
 ### Documentation
 
