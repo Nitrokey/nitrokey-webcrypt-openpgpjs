@@ -311,7 +311,7 @@ decrypt the message.</p></div>
     
 
     
-    <h4 class="name" id="decrypt"><span class="type-signature">(async) </span>decrypt<span class="signature">(key, randomSessionKey<span class="signature-attributes">opt</span>, plugin<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="decrypt"><span class="type-signature">(async) </span>decrypt<span class="signature">(key, randomSessionKey<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -347,8 +347,6 @@ decrypt the message.</p></div>
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
@@ -381,10 +379,6 @@ decrypt the message.</p></div>
                 </td>
             
 
-            
-                <td class="default">
-                
-                </td>
             
 
             <td class="description last"><p>decrypted private key</p></td>
@@ -419,124 +413,9 @@ decrypt the message.</p></div>
             
 
             
-                <td class="default">
-                
-                </td>
-            
 
             <td class="description last"><p>Bogus session key to use in case of sensitive decryption error, or if the decrypted session key is of a different type/size.
 This is needed for constant-time processing. Expected object of the form: { sessionKey: Uint8Array, sessionKeyAlgorithm: enums.symmetric }</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>plugin</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Object with callbacks for overwriting the standard behavior with the private key</p>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>decrypt</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Async function for decrypting data (only for RSA)</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>agree</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Async function for calculation of the shared secret (only for ECC)</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
         </tr>
 
     
@@ -579,7 +458,7 @@ This is needed for constant-time processing. Expected object of the form: { sess
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/public_key_encrypted_session_key.js">packet/public_key_encrypted_session_key.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/public_key_encrypted_session_key.js#L123">line 123</a>
+        <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/public_key_encrypted_session_key.js">packet/public_key_encrypted_session_key.js</a>, <a href="https://github.com/openpgpjs/openpgpjs/blob/v5.3.1/src/packet/public_key_encrypted_session_key.js#L120">line 120</a>
     </li></ul></dd>
     
 
