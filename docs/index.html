@@ -684,8 +684,16 @@ secret material leaks. Additionally, this can increase usage control by introduc
 agree, generateKeyPair. The detailed description of each is provided in the below example. The plugin object is then passed
 to all related main OpenPGPjs operations. If that's omitted, the standard OpenPGPjs behavior will be executed.</p>
 <p>In the following implementation the host of the private key operations will be a Nitrokey WebCrypt device
-(e.g. Nitrokey 3).</p>
+(e.g. Nitrokey 3). Nitrokey WebCrypt uses Webauthn standard to create a communication channel with the security key
+handling it, which by design should allow to run it on any modern browser and platform.
+At the moment it is tested only in the Chrome-based browsers. Support for the Node.js requires additional implementation.
+More details at:</p>
+<ul>
+<li>https://github.com/Nitrokey/nitrokey-webcrypt</li>
+<li>https://github.com/Nitrokey/nitrokey-webcrypt-js</li>
+</ul>
 <pre class="prettyprint source lang-javascript"><code>(async () => {
+  const openpgp = require('openpgp');
   const {
     hexStringToByte,
     WEBCRYPT_LOGIN,
@@ -859,7 +867,7 @@ to all related main OpenPGPjs operations. If that's omitted, the standard OpenPG
 
 
 </code></pre>
-<p>See<code>./test/general/webcrypt.js</code> for complete usage example.</p>
+<p>See<code>./test/general/webcrypt.js</code> for the complete usage example.</p>
 <h3 id="documentation">Documentation</h3>
 <p>The full documentation is available at <a href="https://docs.openpgpjs.org/">openpgpjs.org</a>.</p>
 <h3 id="security-audit">Security Audit</h3>
