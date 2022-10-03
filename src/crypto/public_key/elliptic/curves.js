@@ -62,16 +62,6 @@ const curves = {
     payloadSize: 32,
     sharedSize: 256
   },
-  webcrypt_p256: {
-    oid: [0x06, 0x08, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x03, 0x01, 0x07],
-    keyType: enums.publicKey.ecdsa,
-    hash: enums.hash.sha256,
-    cipher: enums.symmetric.aes128,
-    node: nodeCurves.p256,
-    web: webCurves.p256,
-    payloadSize: 32,
-    sharedSize: 256
-  },
   p384: {
     oid: [0x06, 0x05, 0x2B, 0x81, 0x04, 0x00, 0x22],
     keyType: enums.publicKey.ecdsa,
@@ -179,13 +169,13 @@ class Curve {
     }
   }
 
-  async genKeyPair(plugin) {
+  async genKeyPair(plugin = null) {
     let keyPair;
-    if (this.name === 'webcrypt_p256'){
+    if (plugin !== undefined && plugin !== null){
       try {
         return plugin.generateKeyPair(this);
       } catch (err) {
-        util.printDebugError('Nitrokey WebCrypt failed generating ec key ' + err.message);
+        util.printDebugError('Plugin failed in generating ec key ' + err.message);
         throw err;
       }
     }
@@ -223,14 +213,14 @@ class Curve {
   }
 }
 
-async function generate(curve, plugin) {
+async function generate(curve, plugin = null) {
   const BigInteger = await util.getBigInteger();
 
   curve = new Curve(curve);
   const keyPair = await curve.genKeyPair(plugin);
   let Q;
   let secret;
-  if (curve.name === 'webcrypt_p256') { //web
+  if (plugin !== undefined && plugin !== null) { //web
     Q = keyPair.publicKey;
     secret = keyPair.privateKey;
   } else {

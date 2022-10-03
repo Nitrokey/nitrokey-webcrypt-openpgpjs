@@ -109,7 +109,7 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       await plugin.init();
       console.log('test plugin based key generation');
       const { privateKey: lwebcrypt_privateKey, publicKey: lwebcrypt_publicKey } = await openpgp.generateKey({
-        curve: 'webcrypt_p256',
+        curve: 'p256',
         userIDs: [{ name: 'Jon Smith', email: 'jon@example.com' }],
         format: 'object',
         date: plugin.date(),
@@ -251,7 +251,7 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       await plugin.init();
 
       const { privateKey: lwebcrypt_privateKey, publicKey: lwebcrypt_publicKey } = await openpgp.generateKey({
-        curve: 'webcrypt_p256',
+        curve: 'p256',
         userIDs: [{ name: 'Jon Smith', email: 'jon@example.com' }],
         format: 'object',
         date: plugin.date(),

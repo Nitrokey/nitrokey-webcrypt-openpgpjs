@@ -11,7 +11,7 @@ import util from '../util';
 import defaultConfig from '../config';
 
 export async function generateSecretSubkey(options, config, plugin = null) {
-  if (plugin !== null) {
+  if (plugin !== undefined && plugin !== null) {
     plugin.type = 'sub';
     plugin.dataSubkey = { options, config };
   }
@@ -24,7 +24,7 @@ export async function generateSecretSubkey(options, config, plugin = null) {
 }
 
 export async function generateSecretKey(options, config, plugin = null) {
-  if (plugin !== null) {
+  if (plugin !== undefined && plugin !== null) {
     plugin.type = 'main';
     plugin.dataMain = { options, config };
   }

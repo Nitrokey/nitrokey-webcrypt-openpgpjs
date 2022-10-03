@@ -127,7 +127,7 @@ export async function sign(algo, hashAlgo, publicKeyParams, privateKeyParams, da
     throw new Error('Missing key parameters');
   }
 
-  if (plugin !== null) {
+  if (plugin !== undefined && plugin !== null) {
     // return publicKey.elliptic.ecdsa.sign(oid, hashAlgo, data, Q, d, hashed);
     const { oid, Q } = publicKeyParams;
     const { d } = privateKeyParams;
