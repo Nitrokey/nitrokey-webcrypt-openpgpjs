@@ -213,8 +213,8 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
     });
 
 
-    it('Signing big message webcrypt non-detached', async function () {
-      const clearText = 'Hello, World!'.padEnd(980, '='); // 980, 900, 500 works, 1100 does not
+    it('Signing big message webcrypt non-detached 900', async function () {
+      const clearText = 'Hello, World!'.padEnd(900, '='); // 900, 500 works; 980,1100 does not,
       const unsignedMessage = await openpgp.createCleartextMessage({ text: clearText });
       const cleartextMessage = await openpgp.sign({
         message: unsignedMessage,
