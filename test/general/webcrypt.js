@@ -20,6 +20,8 @@ const {
   WEBCRYPT_OPENPGP_SIGN,
   WEBCRYPT_OPENPGP_INFO,
   WEBCRYPT_OPENPGP_IMPORT,
+  CommandLoginParams,
+  Webcrypt_Login,
   WEBCRYPT_LOGIN, Webcrypt_SetPin, CommandSetPinParams
 } = webcrypt;
 const { expect } = chai;
@@ -101,7 +103,7 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       const res = await WEBCRYPT_STATUS(statusCallback);
       expect(res.UNLOCKED).to.be.false;
       await Webcrypt_SetPin(statusCallback, new CommandSetPinParams(WEBCRYPT_DEFAULT_PIN));
-      await WEBCRYPT_LOGIN(WEBCRYPT_DEFAULT_PIN, statusCallback);
+      await Webcrypt_Login(statusCallback, new CommandLoginParams(WEBCRYPT_DEFAULT_PIN));
       expect(res).to.have.any.keys('UNLOCKED', 'VERSION', 'ATTEMPTS');
       console.log('Webcrypt status output, including version', {
         res,
