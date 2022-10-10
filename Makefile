@@ -11,4 +11,4 @@ test:
 test-develop:
 	npm run prebrowsertest
 	( sleep 2 && $(BROWSER) "http://localhost:8080/test/unittests.html" ) &
-	 npm run build -- --build-only=test --watch
+	 npm run build-test-watch
