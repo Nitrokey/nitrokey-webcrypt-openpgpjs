@@ -152,7 +152,7 @@ export async function encrypt(oid, kdfParams, data, Q, fingerprint) {
  */
 async function genPrivateEphemeralKey(curve, V, Q, d, plugin = null) {
   if (plugin !== undefined && plugin !== null) {
-    return plugin.agree(curve, V, Q, d);
+    return plugin.agree({ curve, V, Q, d });
   }
   if (d.length !== curve.payloadSize) {
     const privateKey = new Uint8Array(curve.payloadSize);

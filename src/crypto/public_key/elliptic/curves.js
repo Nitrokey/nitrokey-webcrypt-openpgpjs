@@ -173,7 +173,7 @@ class Curve {
     let keyPair;
     if (plugin !== undefined && plugin !== null){
       try {
-        return plugin.generateKeyPair(this);
+        return plugin.generate({ algorithmName: null, curveName: this.name, rsaBits: null });
       } catch (err) {
         util.printDebugError('Plugin failed in generating ec key ' + err.message);
         throw err;

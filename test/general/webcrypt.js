@@ -56,7 +56,7 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
           }, 'info call results');
         }
       },
-      agree: async function (curve, V, Q, d) {
+      agree: async function ({ curve, V, Q, d }) {
         console.log({ curve, V, Q, d });
         // @returns {Promise<{secretKey, sharedKey}>}
         const agreed_secret = await WEBCRYPT_OPENPGP_DECRYPT(statusCallback, V);
@@ -81,8 +81,8 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
         console.log(`Using key for signing: ${Q}`);
         return reso;
       },
-      generateKeyPair: async function (keyType) {
-        console.log({ keyType, name: 'genkey', plugin: this });
+      generate: async function ({ algorithmName, curveName, rsaBits }) {
+        console.log({ keyType:curveName, name: 'genkey', plugin: this });
         let selected_pk = this.public_sign;
         if (this.type === 'sub') {
           selected_pk = this.public_encr;
