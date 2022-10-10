@@ -73,6 +73,12 @@ export async function generate(options, config, plugin) {
   const promises = [].concat(options.subkeys.map(options => helper.generateSecretSubkey(options, config, plugin)));
   const packets = [main_packet].concat(await Promise.all(promises));
 
+
+  // let promises = [helper.generateSecretKey(options, config)];
+  // promises = promises.concat(options.subkeys.map(options => helper.generateSecretSubkey(options, config)));
+  // const packets = await Promise.all(promises);
+
+
   const key = await wrapKeyObject(packets[0], packets.slice(1), options, config, plugin);
   const revocationCertificate = await key.getRevocationCertificate(options.date, config);
   key.revocationSignatures = [];
