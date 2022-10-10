@@ -12,6 +12,7 @@ import defaultConfig from '../config';
 
 export async function generateSecretSubkey(options, config, plugin = null) {
   if (plugin !== undefined && plugin !== null) {
+    plugin = Object.assign({}, plugin); // clone
     plugin.type = 'sub';
     plugin.dataSubkey = { options, config };
   }
@@ -25,6 +26,7 @@ export async function generateSecretSubkey(options, config, plugin = null) {
 
 export async function generateSecretKey(options, config, plugin = null) {
   if (plugin !== undefined && plugin !== null) {
+    plugin = Object.assign({}, plugin); // clone
     plugin.type = 'main';
     plugin.dataMain = { options, config };
   }
