@@ -93,7 +93,7 @@
   },
   "dependencies": {
     "asn1.js": "^5.0.0",
-    "nitrokey_webcrypt": "/home/sz/work/webcrypt/webcrypt-js-lib"
+    "nitrokey_webcrypt": "file:../webcrypt-js-lib"
   },
   "repository": {
     "type": "git",
