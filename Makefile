@@ -1,5 +1,5 @@
 all:
-	env NODE_ENV=development npm
+	env NODE_ENV=development npm start
 
 BROWSER=chromium-browser
 .PHONY: test test-develop
