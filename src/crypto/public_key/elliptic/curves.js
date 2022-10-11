@@ -216,14 +216,17 @@ class Curve {
   }
 }
 
-async function generate(curve, plugin = null) {
+/**
+ * @param {{plugin: {generate: CallableFunction}, algo: number}} [plugin_with_data]
+ */
+async function generate(curve, plugin_with_data = null) {
   const BigInteger = await util.getBigInteger();
 
   curve = new Curve(curve);
-  const keyPair = await curve.genKeyPair(plugin);
+  const keyPair = await curve.genKeyPair(plugin_with_data);
   let Q;
   let secret;
-  if (plugin !== undefined && plugin !== null) { //web
+  if (plugin_with_data !== undefined && plugin_with_data !== null) { //web
     Q = keyPair.publicKey;
     secret = keyPair.privateKey;
   } else {
