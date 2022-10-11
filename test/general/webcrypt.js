@@ -83,6 +83,13 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
         console.log(`Using key for signing: ${Q}`);
         return reso;
       },
+      /**
+       * Function to wrap the hardware keys into a new key
+       *
+       * @param {Object} obj - An object argument to destructurize
+       * @param {string} obj.algorithmName - Type of the algorithm
+       * @param {string} obj.curveName - Property 2.
+       */
       generate: async function ({ algorithmName, curveName, rsaBits }) {
         console.log({ keyType:curveName, name: 'genkey', plugin: this }, { algorithmName, curveName, rsaBits });
         let selected_pk = this.public_sign;
