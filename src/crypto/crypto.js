@@ -277,7 +277,10 @@ export function serializeParams(algo, params) {
  * @returns {Promise<{ publicParams: {Object}, privateParams: {Object} }>} The parameters referenced by name.
  * @async
  */
-export function generateParams(algo, bits, oid, plugin) {
+export function generateParams(algo, bits, oid, plugin = null) {
+  if (plugin) {
+    plugin.algo = algo;
+  }
   switch (algo) {
     case enums.publicKey.rsaEncrypt:
     case enums.publicKey.rsaEncryptSign:

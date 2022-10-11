@@ -169,11 +169,14 @@ class Curve {
     }
   }
 
-  async genKeyPair(plugin = null) {
+  /**
+   * @param {{plugin: {generate: CallableFunction}, algo: number}} [plugin_with_data]
+   */
+  async genKeyPair(plugin_with_data = null) {
     let keyPair;
-    if (plugin !== undefined && plugin !== null){
+    if (plugin_with_data !== undefined && plugin_with_data !== null){
       try {
-        return plugin.generate({ algorithmName: null, curveName: this.name, rsaBits: null });
+        return plugin_with_data.plugin.generate({ algorithmName: plugin_with_data.algo, curveName: this.name, rsaBits: null });
       } catch (err) {
         util.printDebugError('Plugin failed in generating ec key ' + err.message);
         throw err;

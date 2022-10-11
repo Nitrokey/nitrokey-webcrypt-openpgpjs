@@ -24,6 +24,7 @@ const {
   Webcrypt_Login,
   WEBCRYPT_LOGIN, Webcrypt_SetPin, CommandSetPinParams
 } = webcrypt;
+const { enums } = openpgp;
 const { expect } = chai;
 
 const WEBCRYPT_DEFAULT_PIN = '12345678';
@@ -38,7 +39,6 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
     const statusCallback = s => (console.log(s));
 
     const plugin = {
-      type: 'none',
       date: function () {
         return this.webcrypt_date ? new Date(this.webcrypt_date) : new Date(2019, 1, 1);
       }, // the default WebCrypt date for the created keys
@@ -84,13 +84,16 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
         return reso;
       },
       generate: async function ({ algorithmName, curveName, rsaBits }) {
-        console.log({ keyType:curveName, name: 'genkey', plugin: this });
+        console.log({ keyType:curveName, name: 'genkey', plugin: this }, { algorithmName, curveName, rsaBits });
         let selected_pk = this.public_sign;
-        if (this.type === 'sub') {
+        if (algorithmName === openpgp.enums.publicKey.ecdh) {
           selected_pk = this.public_encr;
-          console.log(`Selecting subkey: ${selected_pk} for encryption`);
+          console.warn(`Selecting subkey: ${selected_pk} for encryption`);
+        } else if (algorithmName === openpgp.enums.publicKey.ecdsa) {
+          console.warn(`Selecting main: ${selected_pk} for signing`);
         } else {
-          console.log(`Selecting main: ${selected_pk} for signing`);
+          console.error(`Not supported algorithm: ${algorithmName}`);
+          throw new Error(`Not supported algorithm: ${algorithmName}`);
         }
         return { publicKey: selected_pk, privateKey: new Uint8Array(32).fill(42) };
       }
