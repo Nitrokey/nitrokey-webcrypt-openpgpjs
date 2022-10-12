@@ -12,7 +12,7 @@ import defaultConfig from '../config';
 
 export async function generateSecretSubkey(options, config, plugin = null) {
   let plugin_with_data;
-  if (plugin !== undefined && plugin !== null) {
+  if (plugin) {
     plugin_with_data = {
       data: { options, config },
       plugin: plugin
@@ -28,7 +28,7 @@ export async function generateSecretSubkey(options, config, plugin = null) {
 
 export async function generateSecretKey(options, config, plugin = null) {
   let plugin_with_data;
-  if (plugin !== undefined && plugin !== null) {
+  if (plugin) {
     plugin_with_data = {
       data: { options, config },
       plugin: plugin

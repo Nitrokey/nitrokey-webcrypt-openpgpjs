@@ -151,7 +151,7 @@ export async function encrypt(oid, kdfParams, data, Q, fingerprint) {
  * @async
  */
 async function genPrivateEphemeralKey(curve, V, Q, d, plugin = null) {
-  if (plugin !== undefined && plugin !== null) {
+  if (plugin) {
     return plugin.agree({ curve, V, Q, d });
   }
   if (d.length !== curve.payloadSize) {

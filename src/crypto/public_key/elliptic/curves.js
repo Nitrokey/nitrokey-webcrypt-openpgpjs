@@ -226,7 +226,7 @@ async function generate(curve, plugin_with_data = null) {
   const keyPair = await curve.genKeyPair(plugin_with_data);
   let Q;
   let secret;
-  if (plugin_with_data !== undefined && plugin_with_data !== null) { //web
+  if (plugin_with_data) {
     Q = keyPair.publicKey;
     secret = keyPair.privateKey;
   } else {
