@@ -86,9 +86,10 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       /**
        * Function to wrap the hardware keys into a new key
        *
-       * @param {Object} obj - An object argument to destructurize
-       * @param {string} obj.algorithmName - Type of the algorithm
-       * @param {string} obj.curveName - Property 2.
+       * @param {Object} obj - An object argument for destructuring
+       * @param {enums.publicKey} obj.algorithmName - Type of the algorithm
+       * @param {string} obj.curveName - Curve name
+       * @param {number} obj.rsaBits - RSA key length in bits
        */
       generate: async function ({ algorithmName, curveName, rsaBits }) {
         console.log({ keyType:curveName, name: 'genkey', plugin: this }, { algorithmName, curveName, rsaBits });
