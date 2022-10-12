@@ -14,7 +14,6 @@ export async function generateSecretSubkey(options, config, plugin = null) {
   let plugin_with_data;
   if (plugin) {
     plugin_with_data = {
-      data: { options, config },
       plugin: plugin
     };
   }
@@ -30,7 +29,6 @@ export async function generateSecretKey(options, config, plugin = null) {
   let plugin_with_data;
   if (plugin) {
     plugin_with_data = {
-      data: { options, config },
       plugin: plugin
     };
   }
