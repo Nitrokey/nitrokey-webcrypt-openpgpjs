@@ -219,15 +219,8 @@ async function generate(curve, plugin_with_data = null) {
 
   curve = new Curve(curve);
   const keyPair = await curve.genKeyPair(plugin_with_data);
-  let Q;
-  let secret;
-  if (plugin_with_data) {
-    Q = keyPair.publicKey;
-    secret = keyPair.privateKey;
-  } else {
-    Q = new BigInteger(keyPair.publicKey).toUint8Array();
-    secret = new BigInteger(keyPair.privateKey).toUint8Array('be', curve.payloadSize);
-  }
+  const Q = new BigInteger(keyPair.publicKey).toUint8Array();
+  const secret = new BigInteger(keyPair.privateKey).toUint8Array('be', curve.payloadSize);
   return {
     oid: curve.oid,
     Q,
