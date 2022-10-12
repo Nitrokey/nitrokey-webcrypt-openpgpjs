@@ -174,7 +174,7 @@ class Curve {
    */
   async genKeyPair(plugin_with_data = null) {
     let keyPair;
-    if (plugin_with_data !== undefined && plugin_with_data !== null){
+    if (plugin_with_data){
       try {
         return plugin_with_data.plugin.generate({ algorithmName: plugin_with_data.algo, curveName: this.name, rsaBits: null });
       } catch (err) {
