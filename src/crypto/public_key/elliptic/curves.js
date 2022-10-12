@@ -170,7 +170,7 @@ class Curve {
   }
 
   /**
-   * @param {{plugin: {generate: CallableFunction}, algo: number}} [plugin_with_data]
+   * @param {{plugin: {generate: CallableFunction}, algo: enums.publicKey}} [plugin_with_data]
    */
   async genKeyPair(plugin_with_data = null) {
     let keyPair;
