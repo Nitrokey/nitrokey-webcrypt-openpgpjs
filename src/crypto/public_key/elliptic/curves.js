@@ -175,12 +175,7 @@ class Curve {
   async genKeyPair(plugin_with_data = null) {
     let keyPair;
     if (plugin_with_data){
-      try {
-        return plugin_with_data.plugin.generate({ algorithmName: plugin_with_data.algo, curveName: this.name, rsaBits: null });
-      } catch (err) {
-        util.printDebugError('Plugin failed in generating ec key ' + err.message);
-        throw err;
-      }
+      return plugin_with_data.plugin.generate({ algorithmName: plugin_with_data.algo, curveName: this.name, rsaBits: null });
     }
     switch (this.type) {
       case 'web':
