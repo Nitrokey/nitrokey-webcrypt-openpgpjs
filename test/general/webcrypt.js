@@ -38,8 +38,9 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
   describe('WebCrypt general - unit tests', function () {
 
     before(function() {
-      const webauthn_available = typeof window !== undefined && window.PublicKeyCredential !== undefined;
+      const webauthn_available = typeof window !== 'undefined' && window.PublicKeyCredential !== undefined;
       if (!webauthn_available) {
+        // eslint-disable-next-line no-invalid-this
         this.skip();
       }
     });
