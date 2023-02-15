@@ -25,6 +25,4 @@ export * from './encoding/armor';
 
 export { default as enums } from './enums';
 
-export { HardwareKeys } from './hardwareKeys';
-
 export { default as config } from './config/config';

@@ -57,7 +57,7 @@ module.exports = () => describe('OpenPGP.js webcrypt public api tests', function
       }
     });
 
-    class WebCryptHardwareKeysPlugin extends openpgp.HardwareKeys {
+    class WebCryptHardwareKeysPlugin {
       async serialNumber() {
         return new Uint8Array(16).fill('A'.charCodeAt(0));
       }
