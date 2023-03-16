@@ -31,7 +31,7 @@ import util from '../../../util';
 import { b64ToUint8Array } from '../../../encoding/base64';
 import * as pkcs5 from '../../pkcs5';
 import { keyFromPublic, keyFromPrivate, getIndutnyCurve } from './indutnyKey';
-import { getCipher } from '../../crypto';
+import getCipher from '../../cipher/getCipher';
 import defaultConfig from '../../../config';
 
 const webCrypto = util.getWebCrypto();
@@ -99,7 +99,7 @@ async function kdf(hashAlgo, X, length, param, stripLeading = false, stripTraili
 async function genPublicEphemeralKey(curve, Q) {
   switch (curve.type) {
     case 'curve25519': {
-      const d = await getRandomBytes(32);
+      const d = getRandomBytes(32);
       const { secretKey, sharedKey } = await genPrivateEphemeralKey(curve, Q, null, d);
       let { publicKey } = nacl.box.keyPair.fromSecretKey(secretKey);
       publicKey = util.concatUint8Array([new Uint8Array([0x40]), publicKey]);

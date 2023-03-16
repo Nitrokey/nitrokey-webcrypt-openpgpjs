@@ -1,15 +1,13 @@
 /* eslint-disable max-lines */
 /* globals tryTests: true */
+const { use: chaiUse, expect } = require('chai');
+chaiUse(require('chai-as-promised'));
 
 const openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../..');
 const util = require('../../src/util');
 const { isAEADSupported, getPreferredAlgo } = require('../../src/key');
 const KeyID = require('../../src/type/keyid');
 
-const chai = require('chai');
-chai.use(require('chai-as-promised'));
-
-const { expect } = chai;
 
 const priv_key_arm2 =
   ['-----BEGIN PGP PRIVATE KEY BLOCK-----',
@@ -3236,6 +3234,26 @@ module.exports = () => describe('Key', function() {
     });
   });
 
+  it('clone() - removing users or their signatures does not affect the original key', async function() {
+    const key = await openpgp.readKey({ armoredKey: priv_key_rsa });
+    const keyClone = key.clone();
+    expect(key.users[0].selfCertifications.length > 0).to.be.true;
+    expect(keyClone.users[0].selfCertifications.length > 0).to.be.true;
+    keyClone.users[0].selfCertifications = [];
+    expect(key.users[0].selfCertifications.length > 0).to.be.true;
+    expect(keyClone.users[0].selfCertifications.length > 0).to.be.false;
+  });
+
+  it('clone() - removing subkeys or their signatures does not affect the original key', async function() {
+    const key = await openpgp.readKey({ armoredKey: priv_key_rsa });
+    const keyClone = key.clone(true);
+    expect(key.subkeys[0].bindingSignatures.length > 0).to.be.true;
+    expect(keyClone.subkeys[0].bindingSignatures.length > 0).to.be.true;
+    keyClone.subkeys[0].bindingSignatures = [];
+    expect(key.subkeys[0].bindingSignatures.length > 0).to.be.true;
+    expect(keyClone.subkeys[0].bindingSignatures.length > 0).to.be.false;
+  });
+
   it('revoke() - primary key', async function() {
     const privKey = await openpgp.decryptKey({
       privateKey: await openpgp.readKey({ armoredKey: priv_key_arm2 }),
@@ -3274,6 +3292,28 @@ module.exports = () => describe('Key', function() {
 
       await subkey.verify();
       await expect(revKey.verify()).to.be.rejectedWith('Subkey is revoked');
+    });
+  });
+
+  it('revoke() - user', async function() {
+    const pubKey = await openpgp.readKey({ armoredKey: pub_key_arm2 });
+    const privKey = await openpgp.decryptKey({
+      privateKey: await openpgp.readKey({ armoredKey: priv_key_arm2 }),
+      passphrase: 'hello world'
+    });
+
+    const user = pubKey.users[0];
+    await user.revoke(privKey.keyPacket, {
+      flag: openpgp.enums.reasonForRevocation.userIDInvalid
+    }).then(async revUser => {
+      expect(user.userID.equals(revUser.userID)).to.be.true;
+      expect(revUser.revocationSignatures).to.exist.and.have.length(1);
+      expect(revUser.revocationSignatures[0].signatureType).to.equal(openpgp.enums.signature.certRevocation);
+      expect(revUser.revocationSignatures[0].reasonForRevocationFlag).to.equal(openpgp.enums.reasonForRevocation.userIDInvalid);
+      expect(revUser.revocationSignatures[0].reasonForRevocationString).to.equal('');
+
+      await user.verify();
+      await expect(revUser.verify()).to.be.rejectedWith('Self-certification is revoked');
     });
   });
 

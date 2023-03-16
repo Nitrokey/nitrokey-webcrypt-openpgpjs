@@ -198,7 +198,7 @@ class PrivateKey extends PublicKey {
       signatureType: enums.signature.keyRevocation,
       reasonForRevocationFlag: enums.write(enums.reasonForRevocation, reasonForRevocationFlag),
       reasonForRevocationString
-    }, date, undefined, undefined, config));
+    }, date, undefined, undefined, undefined, config));
     return key;
   }
 

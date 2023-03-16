@@ -25,9 +25,9 @@
  */
 
 import publicKey from './public_key';
-import * as cipher from './cipher';
 import mode from './mode';
 import { getRandomBytes } from './random';
+import getCipher from './cipher/getCipher';
 import ECDHSymkey from '../type/ecdh_symkey';
 import KDFParams from '../type/kdf_params';
 import enums from '../enums';
@@ -374,8 +374,7 @@ export async function getPrefixRandom(algo) {
  * Generating a session key for the specified symmetric algorithm
  * See {@link https://tools.ietf.org/html/rfc4880#section-9.2|RFC 4880 9.2} for algorithms.
  * @param {module:enums.symmetric} algo - Symmetric encryption algorithm
- * @returns {Promise<Uint8Array>} Random bytes as a string to be used as a key.
- * @async
+ * @returns {Uint8Array} Random bytes as a string to be used as a key.
  */
 export function generateSessionKey(algo) {
   const { keySize } = getCipher(algo);
@@ -393,16 +392,7 @@ export function getAEADMode(algo) {
   return mode[algoName];
 }
 
-/**
- * Get implementation of the given cipher
- * @param {enums.symmetric} algo
- * @returns {Object}
- * @throws {Error} on invalid algo
- */
-export function getCipher(algo) {
-  const algoName = enums.read(enums.symmetric, algo);
-  return cipher[algoName];
-}
+export { getCipher };
 
 /**
  * Check whether the given curve OID is supported

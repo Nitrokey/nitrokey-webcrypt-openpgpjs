@@ -50,7 +50,7 @@ const RSAPrivateKey = nodeCrypto ? asn1.define('RSAPrivateKey', function () {
 const RSAPublicKey = nodeCrypto ? asn1.define('RSAPubliceKey', function () {
   this.seq().obj( // used for native NodeJS crypto
     this.key('modulus').int(), // n
-    this.key('publicExponent').int(), // e
+    this.key('publicExponent').int() // e
   );
 }) : undefined;
 /* eslint-enable no-invalid-this */
@@ -197,13 +197,15 @@ export async function generate(bits, e) {
       publicKeyEncoding: { type: 'pkcs1', format: 'der' },
       privateKeyEncoding: { type: 'pkcs1', format: 'der' }
     };
-    const prv = await new Promise((resolve, reject) => nodeCrypto.generateKeyPair('rsa', opts, (err, _, der) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(RSAPrivateKey.decode(der, 'der'));
-      }
-    }));
+    const prv = await new Promise((resolve, reject) => {
+      nodeCrypto.generateKeyPair('rsa', opts, (err, _, der) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(RSAPrivateKey.decode(der, 'der'));
+        }
+      });
+    });
     /**
      * OpenPGP spec differs from DER spec, DER: `u = (inverse of q) mod p`, OpenPGP: `u = (inverse of p) mod q`.
      * @link https://tools.ietf.org/html/rfc3447#section-3.2
@@ -433,7 +435,7 @@ async function nodeEncrypt(data, n, e) {
 async function bnEncrypt(data, n, e) {
   const BigInteger = await util.getBigInteger();
   n = new BigInteger(n);
-  data = new BigInteger(await emeEncode(data, n.byteLength()));
+  data = new BigInteger(emeEncode(data, n.byteLength()));
   e = new BigInteger(e);
   if (data.gte(n)) {
     throw new Error('Message size cannot exceed modulus size');

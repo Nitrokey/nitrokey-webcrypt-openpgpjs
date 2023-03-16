@@ -1,15 +1,12 @@
 /* eslint-disable max-lines */
 /* globals tryTests: true */
+const stream = require('@openpgp/web-stream-tools');
+const { use: chaiUse, expect } = require('chai');
+chaiUse(require('chai-as-promised'));
 
 const openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../..');
+
 const util = require('../../src/util');
-
-const stream = require('@openpgp/web-stream-tools');
-
-const chai = require('chai');
-chai.use(require('chai-as-promised'));
-
-const expect = chai.expect;
 
 module.exports = () => describe('Signature', function() {
   const priv_key_arm1 =
@@ -1136,6 +1133,62 @@ eSvSZutLuKKbidSYMLhWROPlwKc2GU2ws6PrLZAyCAel/lU=
     const config = { knownNotations: ['test@example.com'], minRSABits: 1024 };
     const { signatures: [sig] } = await openpgp.verify({ message, verificationKeys: key, config });
     expect(await sig.verified).to.be.true;
+  });
+
+  it('Can create notations', async function() {
+    const privKey = await openpgp.decryptKey({
+      privateKey: await openpgp.readKey({ armoredKey: priv_key_arm2 }),
+      passphrase: 'hello world'
+    });
+
+    const config = { minRSABits: 1024 };
+    const message_with_notation = await openpgp.encrypt({
+      message: await openpgp.createMessage({ text: 'test' }),
+      encryptionKeys: privKey,
+      signingKeys: privKey,
+      signatureNotations: [
+        {
+          name: 'test@example.com',
+          value: new TextEncoder().encode('test'),
+          humanReadable: true,
+          critical: true
+        },
+        {
+          name: 'séparation-de-domaine@proton.ch',
+          value: new Uint8Array([0, 1, 2, 3]),
+          humanReadable: false,
+          critical: false
+        }
+      ],
+      config
+    });
+    expect(openpgp.decrypt({
+      message: await openpgp.readMessage({ armoredMessage: message_with_notation }),
+      decryptionKeys: privKey,
+      verificationKeys: privKey,
+      expectSigned: true,
+      config
+    })).to.be.rejectedWith('Unknown critical notation: test@example.com');
+    const { signatures: [sig] } = await openpgp.decrypt({
+      message: await openpgp.readMessage({ armoredMessage: message_with_notation }),
+      decryptionKeys: privKey,
+      verificationKeys: privKey,
+      config: {
+        knownNotations: ['test@example.com'],
+        ...config
+      }
+    });
+    expect(await sig.verified).to.be.true;
+    const { packets: [{ rawNotations: notations }] } = await sig.signature;
+    expect(notations).to.have.length(2);
+    expect(notations[0].name).to.equal('test@example.com');
+    expect(notations[0].value).to.deep.equal(new Uint8Array([116, 101, 115, 116]));
+    expect(notations[0].humanReadable).to.be.true;
+    expect(notations[0].critical).to.be.true;
+    expect(notations[1].name).to.equal('séparation-de-domaine@proton.ch');
+    expect(notations[1].value).to.deep.equal(new Uint8Array([0, 1, 2, 3]));
+    expect(notations[1].humanReadable).to.be.false;
+    expect(notations[1].critical).to.be.false;
   });
 
   it('Verify cleartext signed message with two signatures with openpgp.verify', async function() {

@@ -1,5 +1,9 @@
 /* eslint-disable max-lines */
 /* globals tryTests: true */
+const spy = require('sinon/lib/sinon/spy');
+const stream = require('@openpgp/web-stream-tools');
+const { use: chaiUse, expect } = require('chai');
+chaiUse(require('chai-as-promised'));
 
 const openpgp = typeof window !== 'undefined' && window.openpgp ? window.openpgp : require('../..');
 const crypto = require('../../src/crypto');
@@ -8,14 +12,7 @@ const util = require('../../src/util');
 const keyIDType = require('../../src/type/keyid');
 const { isAEADSupported } = require('../../src/key');
 
-const stream = require('@openpgp/web-stream-tools');
-
-const spy = require('sinon/lib/sinon/spy');
-const input = require('./testInputs.js');
-const chai = require('chai');
-chai.use(require('chai-as-promised'));
-
-const expect = chai.expect;
+const input = require('./testInputs');
 
 const detectNode = () => typeof globalThis.process === 'object' && typeof globalThis.process.versions === 'object';
 
@@ -1133,7 +1130,7 @@ module.exports = () => describe('OpenPGP.js public api tests', function() {
         passphrase: 'incorrect'
       }).then(function() {
         throw new Error('Should not decrypt with incorrect passphrase');
-      }).catch(function(error){
+      }).catch(function(error) {
         expect(error.message).to.match(/Incorrect key passphrase/);
         // original key should be unchanged
         expect(privateKey.isDecrypted()).to.be.false;
@@ -2419,7 +2416,7 @@ aOU=
 
         it('should encrypt using custom session key and decrypt using session key', async function () {
           const sessionKey = {
-            data: await crypto.generateSessionKey(openpgp.enums.symmetric.aes256),
+            data: crypto.generateSessionKey(openpgp.enums.symmetric.aes256),
             algorithm: 'aes256'
           };
           const encOpt = {
@@ -2442,7 +2439,7 @@ aOU=
 
         it('should encrypt using custom session key and decrypt using private key', async function () {
           const sessionKey = {
-            data: await crypto.generateSessionKey(openpgp.enums.symmetric.aes128),
+            data: crypto.generateSessionKey(openpgp.enums.symmetric.aes128),
             algorithm: 'aes128'
           };
           const encOpt = {
@@ -2891,7 +2888,7 @@ aOU=
                     },
                     async pull(controller) {
                       if (this.remaining.length) {
-                        await new Promise(res => setTimeout(res));
+                        await new Promise(res => { setTimeout(res); });
                         controller.enqueue(this.remaining.shift() + '\n');
                       } else {
                         controller.close();
@@ -3140,9 +3137,9 @@ aOU=
             await stream.loadStreamsPonyfill();
             const ReadableStream = useNativeStream ? global.ReadableStream : stream.ReadableStream;
             const data = new ReadableStream({
-              async pull(controller) {
+              pull(controller) {
                 if (i++ < 4) {
-                  const randomBytes = await random.getRandomBytes(10);
+                  const randomBytes = random.getRandomBytes(10);
                   controller.enqueue(randomBytes);
                   plaintext.push(randomBytes.slice());
                 } else {
